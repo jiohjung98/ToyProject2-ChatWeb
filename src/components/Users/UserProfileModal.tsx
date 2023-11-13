@@ -24,7 +24,7 @@ interface UserProfileModalProps {
 const UserProfileModal = ({ clickModal, user }: { clickModal: () => void; user: User }) => {
     const router = useRouter();
 
-    const [newChatId, setNewChatId] = useState<string | null>(null);
+    // const [newChatId, setNewChatId] = useState<string | null>(null);
 
     //사용할 때 eslint 주석 삭제
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -55,7 +55,7 @@ const UserProfileModal = ({ clickModal, user }: { clickModal: () => void; user: 
             if (response.ok) {
                 const data = await response.json();
                 const generatedChatId = `1on1_${user.id}_${userId}`;
-                setNewChatId(generatedChatId); 
+                // setNewChatId(generatedChatId); 
 
                 // 생성된 채팅 방으로 이동
                 router.push(`/chating/${data.id}?chatId=${generatedChatId}`);

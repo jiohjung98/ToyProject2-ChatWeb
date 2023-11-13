@@ -39,8 +39,6 @@ export default function ChatingModal(props: ChatingModalProps) {
         router.back();
     };
 
-    console.log(props, 'props');
-
     return (
         <>
             <ModalWrapper

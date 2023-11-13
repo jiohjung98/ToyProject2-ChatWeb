@@ -3,15 +3,16 @@
 import styled from 'styled-components';
 import React, { useState } from 'react';
 import SendArrow from '../../../public/assets/sendArrow.svg';
+import { Socket } from 'socket.io-client';
 
 interface MessageContainerProps {
-    socket: any;
+    socket: Socket;
 }
 
 export default function MessageContainer(props: MessageContainerProps) {
     const [message, setMessage] = useState<string>('');
 
-    function MessageSend(e: React.FormEvent<HTMLFormElement>) {
+    function MessageSend(e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
 
         if (message != '') {
@@ -28,7 +29,7 @@ export default function MessageContainer(props: MessageContainerProps) {
                     setMessage(e.target.value);
                 }}
             />
-            <SendArrow onClick={MessageSend} />
+            <SendaArrow onClick={MessageSend} />
         </MessageWrapper>
     );
 }

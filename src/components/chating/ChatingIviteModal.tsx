@@ -1,6 +1,6 @@
 'use client';
 
 //type
-export default function ChatingInviteModal(props: any) {
+export default function ChatingInviteModal() {
     return <></>;
 }

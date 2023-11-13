@@ -1,10 +1,12 @@
 'use client';
-import { UserItem } from '@/components/Users/UserItem';
+import UserItem from '@/components/Users/UserItem';
 import { instance } from '@/lib/api';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { MdClose, MdSearch } from 'react-icons/md';
 import Navigation from '@/components/Navigation';
+import { io } from 'socket.io-client';
+import React from 'react';
 
 interface User {
     id: string;
@@ -14,9 +16,14 @@ interface User {
     chats: string[];
 }
 
-export default function Users() {
+interface ConnectUserIdList {
+    users: string[];
+}
+
+const Users = () => {
     const [users, setUsers] = useState<User[] | []>([]);
     const [loading, setLoading] = useState(true);
+
     const getUsers = async () => {
         try {
             let res = await instance.get<unknown, User[]>('/users');
@@ -34,14 +41,38 @@ export default function Users() {
 
     /**사용자 검색 */
     const [userInput, setUserInput] = useState('');
-    const getInputValue = (e: ChangeEvent<HTMLInputElement>) => {
+    const getInputValue = React.useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setUserInput(e.target.value);
-    };
+    }, []);
     const searched = users.filter((user) => user.name.includes(userInput));
 
-    const clearSearchInput = () => {
+    const clearSearchInput = React.useCallback(() => {
         setUserInput('');
-    };
+    }, []);
+
+    /** 접속 상태 */
+    const connectUserIdListRef = useRef<ConnectUserIdList>({
+        users: [],
+    });
+    const [connectUserIdList, setConnectUserIdList] = useState<ConnectUserIdList>({ users: [] });
+    const accessToken = sessionStorage.getItem('accessToken');
+
+    const socket = io(`https://fastcampus-chat.net/server`, {
+        extraHeaders: {
+            Authorization: `Bearer ${accessToken}`,
+            serverId: `${process.env.NEXT_PUBLIC_SERVER_KEY}`,
+        },
+    });
+
+    useEffect(() => {
+        socket.on('users-server-to-client', (usersIdList) => {
+            if (JSON.stringify(usersIdList.users) !== JSON.stringify(connectUserIdListRef.current.users)) {
+                connectUserIdListRef.current = usersIdList;
+                setConnectUserIdList(usersIdList);
+            }
+            console.log(usersIdList);
+        });
+    }, []);
 
     return (
         <>
@@ -65,7 +96,7 @@ export default function Users() {
                     {loading && <Loading />}
                     {searched.length !== 0
                         ? searched.map((user: User) => {
-                              return <UserItem key={user.id} user={user} />;
+                              return <UserItem key={user.id} user={user} connectUserIdList={connectUserIdList} />;
                           })
                         : !loading && (
                               <NoUserWrap>
@@ -77,7 +108,9 @@ export default function Users() {
             <Navigation />
         </>
     );
-}
+};
+
+export default React.memo(Users);
 
 const UsersWrap = styled.div`
     padding: 3rem;
@@ -89,7 +122,8 @@ const UsersWrap = styled.div`
 `;
 
 const HeaderText = styled.h1`
-    color: #00956e;
+    color: ${({ theme }) => theme.color.mainGreen};
+    font-size: ${({ theme }) => theme.fontSize.title};
 
     margin-top: 0;
 
@@ -104,6 +138,12 @@ const UserList = styled.div`
     height: 80%;
 
     overflow-y: auto;
+    &::-webkit-scrollbar {
+        /*크롬, 사파리, 오페라, 엣지*/
+        display: none;
+    }
+    -ms-overflow-style: none; /* ie */
+    scrollbar-width: none; /* 파이어폭스 */
 `;
 
 const NoUserWrap = styled.div`
@@ -117,15 +157,16 @@ const NoUserWrap = styled.div`
 `;
 
 const NoUserText = styled.h2`
-    color: #05664c;
+    color: ${({ theme }) => theme.color.darkGreen};
+    font-size: ${({ theme }) => theme.fontSize.xl};
 `;
 
 /**사용자 검색 */
-const SearchUserBox = styled.div`
+export const SearchUserBox = styled.div`
     background-color: white;
 
     border-radius: 20px;
-    box-shadow: 0px 2px 30px 0px rgba(0, 0, 0, 0.15);
+    box-shadow: ${({ theme }) => theme.shadow.search};
 
     width: 100%;
     height: 3.5rem;
@@ -134,8 +175,8 @@ const SearchUserBox = styled.div`
     gap: 3%;
 `;
 
-const SearchButton = styled.div`
-    background-color: #00956e;
+export const SearchButton = styled.div`
+    background-color: ${({ theme }) => theme.color.mainGreen};
     width: 5rem;
 
     display: flex;
@@ -146,14 +187,14 @@ const SearchButton = styled.div`
     border-bottom-left-radius: 15px;
 `;
 
-const SearchUserInput = styled.input`
+export const SearchUserInput = styled.input`
     border: none;
 
     width: 32rem;
 
     outline: none;
 
-    font-size: 1.2rem;
+    font-size: ${({ theme }) => theme.fontSize.lg};
 `;
 
 const ClearButton = styled.div`
@@ -165,9 +206,9 @@ const ClearButton = styled.div`
     cursor: pointer;
 
     .clearIcon {
-        color: #00956e;
+        color: ${({ theme }) => theme.color.mainGreen};
         &:hover {
-            color: #05664c;
+            color: ${({ theme }) => theme.color.darkGreen};
             transition: 0.4s;
         }
     }
@@ -178,7 +219,7 @@ const Loading = styled.div`
     height: 50px;
 
     border: 5.5px solid rgba(255, 255, 255, 0.3);
-    border-top: 5.5px solid #00956e;
+    border-top: 5.5px solid ${({ theme }) => theme.color.mainGreen};
     border-radius: 50%;
 
     animation: spin 1s linear infinite;

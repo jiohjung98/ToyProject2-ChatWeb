@@ -4,7 +4,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 // components
-import LoginForm from '@/components/Login/LoginForm';
+import RegisterForm from '@/components/Register/RegisterForm';
 
 const page = () => {
     const accessToken = sessionStorage.getItem('accessToken');
@@ -13,16 +13,16 @@ const page = () => {
         return null;
     } else {
         return (
-            <LoginContainer>
-                <LoginForm />
-            </LoginContainer>
+            <CreatreAccountContainer>
+                <RegisterForm />
+            </CreatreAccountContainer>
         );
     }
 };
 
 export default page;
 
-const LoginContainer = styled.div`
+const CreatreAccountContainer = styled.div`
     width: 100%;
     height: 100%;
     display: flex;

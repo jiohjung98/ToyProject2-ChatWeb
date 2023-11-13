@@ -4,11 +4,15 @@ import styled from 'styled-components';
 import Back from '../../../public/assets/back.svg';
 import Menu from '../../../public/assets/menu.svg';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { ChatingModalToggle } from '@/store/atoms';
 
-export default function ChatingNavigation() {
+interface ChatingNaviagtionProps {
+    chatName: string;
+}
+
+//props type
+export default function ChatingNavigation(props: ChatingNaviagtionProps) {
     const [modalToggle, setModalToggle] = useRecoilState<boolean>(ChatingModalToggle);
 
     const router = useRouter();
@@ -16,12 +20,11 @@ export default function ChatingNavigation() {
     return (
         <NavigationWrapper>
             <BackIcon onClick={() => router.back()} />
-            <ChatTitle>9조 단톡방</ChatTitle>
+            <ChatTitle>{props.chatName}</ChatTitle>
 
             <MenuIcon
                 onClick={() => {
                     setModalToggle(!modalToggle);
-                    console.log(modalToggle);
                 }}
             />
         </NavigationWrapper>

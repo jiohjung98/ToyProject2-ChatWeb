@@ -4,10 +4,14 @@ import styled from 'styled-components';
 import React, { useState } from 'react';
 import SendArrow from '../../../public/assets/sendArrow.svg';
 
-export default function MessageContainer(props: any) {
+interface MessageContainerProps {
+    socket: any;
+}
+
+export default function MessageContainer(props: MessageContainerProps) {
     const [message, setMessage] = useState<string>('');
 
-    function MessageSend(e: any) {
+    function MessageSend(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
         if (message != '') {
@@ -24,7 +28,7 @@ export default function MessageContainer(props: any) {
                     setMessage(e.target.value);
                 }}
             />
-            <SendArrow />
+            <SendArrow onClick={MessageSend} />
         </MessageWrapper>
     );
 }

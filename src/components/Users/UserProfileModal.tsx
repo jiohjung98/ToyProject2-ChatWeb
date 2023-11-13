@@ -2,9 +2,8 @@
 import styled from 'styled-components';
 import { ImBubble } from 'react-icons/im';
 import { MdClose } from 'react-icons/md';
-import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { BiSolidCircle } from 'react-icons/bi';
 
 // types 폴더 나중에 만들어서 type 빼놓기
 interface User {
@@ -15,23 +14,22 @@ interface User {
     chats: string[];
 }
 
+interface ConnectUserIdList {
+    users: string[];
+}
+
 interface UserProfileModalProps {
     clickModal: () => void;
     user: User;
-    newChatId: string | null;
+    connectUserIdList: ConnectUserIdList;
 }
 
-const UserProfileModal = ({ clickModal, user }: { clickModal: () => void; user: User }) => {
+const UserProfileModal = ({ clickModal, user, connectUserIdList }: UserProfileModalProps) => {
     const router = useRouter();
 
-    // const [newChatId, setNewChatId] = useState<string | null>(null);
-
-    //사용할 때 eslint 주석 삭제
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { id, name, picture } = user;
     const accessToken = sessionStorage.getItem('accessToken');
     const userId = sessionStorage.getItem('userId');
-
 
     const handleChatClick = async () => {
         try {
@@ -40,22 +38,21 @@ const UserProfileModal = ({ clickModal, user }: { clickModal: () => void; user: 
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${accessToken}`,
-                    'serverId': `${process.env.NEXT_PUBLIC_SERVER_KEY}`,
+                    Authorization: `Bearer ${accessToken}`,
+                    serverId: `${process.env.NEXT_PUBLIC_SERVER_KEY}`,
                 },
                 body: JSON.stringify({
                     name: `1:1 Chat with ${user.name}`,
                     users: [user.id],
-                    isPrivate: false,
+                    isPrivate: true,
                 }),
             });
 
-            console.log(user.id, userId)
+            console.log(user.id, userId);
 
             if (response.ok) {
                 const data = await response.json();
                 const generatedChatId = `1on1_${user.id}_${userId}`;
-                // setNewChatId(generatedChatId); 
 
                 // 생성된 채팅 방으로 이동
                 router.push(`/chating/${data.id}?chatId=${generatedChatId}`);
@@ -64,9 +61,8 @@ const UserProfileModal = ({ clickModal, user }: { clickModal: () => void; user: 
             }
         } catch (error) {
             console.error('Error creating chat room:', error);
-        } 
+        }
     };
-
 
     return (
         <UserModalBox onClick={clickModal}>
@@ -78,11 +74,20 @@ const UserProfileModal = ({ clickModal, user }: { clickModal: () => void; user: 
                     <UserImg src={picture} />
                     <UserInfo>
                         <UserName>{name}</UserName>
-                        {/* 접속 상태 추후 개발필요. 현재는 하드코딩 */}
-                        <p>online</p>
+                        <UserState>
+                            <BiSolidCircle
+                                size="13"
+                                color={connectUserIdList.users.includes(id) ? '#00956e' : '#950000'}
+                            />
+                            {connectUserIdList.users.includes(id) ? (
+                                <UserStateTextBlack>online</UserStateTextBlack>
+                            ) : (
+                                <UserStateText>offline</UserStateText>
+                            )}
+                        </UserState>
                     </UserInfo>
                     <ToChating onClick={handleChatClick}>
-                        <ImBubble size="40" className="chatIcon" />
+                        <ImBubble size="30" className="chatIcon" />
                         <ChatText>1:1 채팅하기</ChatText>
                     </ToChating>
                 </ModalMain>
@@ -111,7 +116,7 @@ const UserModalBox = styled.div`
 const ModalContent = styled.div`
     background-color: white;
 
-    width: 700px;
+    width: 600px;
     height: 500px;
 
     border-radius: 5%;
@@ -128,11 +133,11 @@ const CloseButton = styled.div`
     cursor: pointer;
 
     .closeIcon {
-        color: #9a9a9a;
+        color: ${({ theme }) => theme.color.darkGray};
     }
 
     &:hover .closeIcon {
-        color: #00956e;
+        color: ${({ theme }) => theme.color.mainGreen};
         transition: 0.4s;
     }
 `;
@@ -142,12 +147,7 @@ const ModalMain = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 1rem;
-
-    .link {
-        text-decoration: none;
-        color: black;
-    }
+    gap: 1.5rem;
 `;
 
 const UserImg = styled.img`
@@ -163,14 +163,13 @@ const UserImg = styled.img`
 
 const UserInfo = styled.div`
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 3rem;
-
-    margin-left: 6rem;
 `;
 
 const UserName = styled.h1`
-    font-size: 2.1rem;
+    font-size: ${({ theme }) => theme.fontSize.title};
+    margin: 0;
 `;
 
 const ToChating = styled.div`
@@ -181,11 +180,27 @@ const ToChating = styled.div`
     cursor: pointer;
 
     &:hover .chatIcon {
-        color: #00956e;
+        color: ${({ theme }) => theme.color.mainGreen};
         transition: 0.4s;
     }
 `;
 
 const ChatText = styled.p`
     font-weight: 500;
+    font-size: ${({ theme }) => theme.fontSize.md};
+`;
+
+const UserState = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+`;
+
+const UserStateText = styled.p`
+    color: ${({ theme }) => theme.color.darkGray};
+    font-size: ${({ theme }) => theme.fontSize.sm};
+`;
+
+const UserStateTextBlack = styled.p`
+    color: black;
 `;

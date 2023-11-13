@@ -1,35 +1,28 @@
 'use client';
 
 import styled from 'styled-components';
-// svg 가져오기
-import userSvg from '../../public/assets/user.svg';
-import mychatSvg from '../../public/assets/mychats.svg';
-import allChatSvg from '../../public/assets/allchats.svg';
-import mypageSvg from '../../public/assets/mypage.svg';
+import { usePathname } from 'next/navigation';
+import { BsFillPeopleFill, BsThreeDots } from 'react-icons/bs';
+import { PiChatCircleBold, PiChatsCircleFill } from 'react-icons/pi';
+
 export default function Navigation() {
-    const userId = sessionStorage.getItem('userId');
+    const pathname = usePathname();
+    const path = pathname.split('/')[1];
+
     return (
         <NavigationContainer>
-            <NavigationBox>
-                <NavigationAnchor href="users">
-                    <UserIcon />
-                </NavigationAnchor>
-            </NavigationBox>
-            <NavigationBox>
-                <NavigationAnchor href={`${userId}`}>
-                    <MyChatIcon />
-                </NavigationAnchor>
-            </NavigationBox>
-            <NavigationBox>
-                <NavigationAnchor href="allchats">
-                    <AllChatsIcon />
-                </NavigationAnchor>
-            </NavigationBox>
-            <NavigationBox>
-                <NavigationAnchor href="#">
-                    <MyPageIcon />
-                </NavigationAnchor>
-            </NavigationBox>
+            <NavigationAnchor href="users">
+                <BsFillPeopleFill size="35" color={path == 'users' ? '#00956e' : '#dbdbdb'} />
+            </NavigationAnchor>
+            <NavigationAnchor href="mychats">
+                <PiChatCircleBold size="35" color={path == 'mychats' ? '#00956e' : '#dbdbdb'} />
+            </NavigationAnchor>
+            <NavigationAnchor href="allchats">
+                <PiChatsCircleFill size="37" color={path == 'allchats' ? '#00956e' : '#dbdbdb'} />
+            </NavigationAnchor>
+            <NavigationAnchor href="#">
+                <BsThreeDots size="35" color={path == '#' ? '#00956e' : '#dbdbdb'} />
+            </NavigationAnchor>
         </NavigationContainer>
     );
 }
@@ -43,17 +36,11 @@ const NavigationContainer = styled.div`
 
     display: flex;
 
-    background-color: #00956e;
+    background-color: #fff;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
 `;
 
-const NavigationBox = styled.div`
-    width: 25%;
-    height: 100%;
-`;
-
 const NavigationAnchor = styled.a`
-    color: black;
     width: 100%;
     height: 100%;
 
@@ -62,23 +49,4 @@ const NavigationAnchor = styled.a`
     align-items: center;
 
     text-decoration: none;
-    &:hover {
-        color: #00956e;
-    }
-`;
-
-const UserIcon = styled(userSvg)`
-    cursor: pointer;
-`;
-
-const MyChatIcon = styled(mychatSvg)`
-    cursor: pointer;
-`;
-
-const AllChatsIcon = styled(allChatSvg)`
-    cursor: pointer;
-`;
-
-const MyPageIcon = styled(mypageSvg)`
-    cursor: pointer;
 `;

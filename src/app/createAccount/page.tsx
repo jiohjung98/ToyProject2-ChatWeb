@@ -7,11 +7,17 @@ import styled from 'styled-components';
 import RegisterForm from '@/components/Register/RegisterForm';
 
 const page = () => {
-    return (
-        <CreatreAccountContainer>
-            <RegisterForm />
-        </CreatreAccountContainer>
-    );
+    const accessToken = sessionStorage.getItem('accessToken');
+
+    if (accessToken) {
+        return null;
+    } else {
+        return (
+            <CreatreAccountContainer>
+                <RegisterForm />
+            </CreatreAccountContainer>
+        );
+    }
 };
 
 export default page;

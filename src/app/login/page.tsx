@@ -7,11 +7,17 @@ import styled from 'styled-components';
 import LoginForm from '@/components/Login/LoginForm';
 
 const page = () => {
-    return (
-        <LoginContainer>
-            <LoginForm />
-        </LoginContainer>
-    );
+    const accessToken = sessionStorage.getItem('accessToken');
+
+    if (accessToken) {
+        return null;
+    } else {
+        return (
+            <LoginContainer>
+                <LoginForm />
+            </LoginContainer>
+        );
+    }
 };
 
 export default page;

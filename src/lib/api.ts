@@ -1,10 +1,11 @@
-import axios, { AxiosResponse, AxiosRequestConfig, AxiosError, InternalAxiosRequestConfig, AxiosHeaders } from 'axios';
+import axios, { AxiosResponse, AxiosRequestConfig, AxiosError } from 'axios';
+import { setToken } from './token';
+import { refreshToken } from './token';
 
 export const instance = axios.create({
     baseURL: 'https://fastcampus-chat.net/',
 });
 
-// any 임시 처리
 function requestInterceptor(config: AxiosRequestConfig): any {
     const accessToken = sessionStorage.getItem('accessToken');
 
@@ -35,15 +36,12 @@ function responseFulfilledInterceptor(res: AxiosResponse) {
         if (res.data.message === 'User created') {
             return res.data;
         } else {
-            const { accessToken } = res.data;
-            if (accessToken !== undefined && accessToken !== null) {
-                const existingToken = sessionStorage.getItem('accessToken');
-                if (!existingToken) {
-                    sessionStorage.setItem('accessToken', accessToken);
-                }
-            }
+            setToken(res.data);
+            return res.data;
         }
-        return res.data;
+    }
+    if (res.status === 401) {
+        refreshToken();
     }
     return Promise.reject(res.data);
 }

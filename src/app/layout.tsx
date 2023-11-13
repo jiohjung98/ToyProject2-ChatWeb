@@ -6,17 +6,13 @@ import { RecoilRoot } from 'recoil';
 import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import { authCheck } from '@/hooks/Auth';
-import { usePathname, useRouter } from 'next/navigation';
 
 import Move from '@/components/Move';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-    const router = useRouter();
-    const pathname = usePathname();
-
     const [shouldRenderMoveComponent, setShouldRenderMoveComponent] = useState<boolean>(false);
 
-    authCheck(setShouldRenderMoveComponent, router, pathname);
+    authCheck(setShouldRenderMoveComponent);
 
     /** 접속 유저 검색 */
     const accessToken = typeof window !== 'undefined' ? sessionStorage.getItem('accessToken') : null;

@@ -52,17 +52,17 @@ export default function ChatingModal(props: ChatingModalProps) {
                 <ModalTitle>대화상대</ModalTitle>
                 {props.users ? (
                     <UsersWrapper>
-                        {props.users.map((user: User) => (
-                            <UserWrapper>
-                                <UserImg src={user.picture} />
-                                <UserName>{user.username}</UserName>
-                            </UserWrapper>
-                        ))}
-                        <UserInviteWrapper>
-                            <UserInviteImg />
-                            <UserInviteName>초대하기</UserInviteName>
-                        </UserInviteWrapper>
-                    </UsersWrapper>
+                    {props.users.map((user: User) => (
+                        <UserWrapper key={user.id}>
+                            <UserImg src={user.picture} />
+                            <UserName>{user.username}</UserName>
+                        </UserWrapper>
+                    ))}
+                    <UserInviteWrapper>
+                        <UserInviteImg />
+                        <UserInviteName>초대하기</UserInviteName>
+                    </UserInviteWrapper>
+                </UsersWrapper>
                 ) : (
                     ''
                 )}

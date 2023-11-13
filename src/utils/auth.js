@@ -1,4 +1,4 @@
-function getLoggedInUserInfo() {
+export default function getLoggedInUserInfo() {
     const userId = sessionStorage.getItem('userId');
 
     if (userId) {

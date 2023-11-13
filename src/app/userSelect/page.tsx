@@ -22,69 +22,71 @@ function UserSelect() {
     const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
 
     const router = useRouter();
-    // const [newChatId, setNewChatId] = useState<string | null>(null);
+    const [newChatId, setNewChatId] = useState<string | null>(null);
     const accessToken = sessionStorage.getItem('accessToken');
     const userId = sessionStorage.getItem('userId');
 
-    const handleChatClick = async () => {
-        try {
-            // 사용자를 선택하지 않았을 경우 어떠한 동작도 X
-            if (selectedUsers.length === 0) {
-                console.log('선택된 사용자가 없습니다');
-                return;
-            }
-    
-            let chatName = '';
-            
-            // 선택된 사용자가 한 명인 경우
-            if (selectedUsers.length === 1) {
-                const selectedUser = selectedUsers[0];
-                chatName = `${userId}와 ${selectedUser.name} 1:1 채팅방`;
-            } else {
-                // 선택된 사용자가 여러 명인 경우 사용자에게 채팅방 이름을 입력받도록 함
-                const userInput = window.prompt('채팅방 이름을 입력하세요', '그룹 채팅');
-    
-                // 사용자가 취소를 누르거나 아무것도 입력하지 않은 경우 기본값 설정
-                chatName = userInput !== null ? userInput : '그룹 채팅';
-            }
-    
-    
-            if (!chatName) {
-                console.log('채팅방 이름이 입력되지 않았습니다');
-                return;
-            }
-    
-            // 선택된 사용자들과 채팅 생성 API 호출
-            const selectedUserIds = selectedUsers.map(user => user.id);
-    
-            const response = await fetch('https://fastcampus-chat.net/chat', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${accessToken}`,
-                    'serverId': `${process.env.NEXT_PUBLIC_SERVER_KEY}`,
-                },
-                body: JSON.stringify({
-                    name: chatName,
-                    users: [userId, ...selectedUserIds], // 로그인한 사용자와 선택된 사용자들을 포함
-                    isPrivate: false,
-                }),
-            });
-    
-            if (response.ok) {
-                const data = await response.json();
-                const generatedChatId = `group_${data.id}`;
-                // setNewChatId(generatedChatId);
-    
-                // 생성된 채팅 방으로 이동
-                router.push(`/chating/${data.id}?chatId=${generatedChatId}`);
-            } else {
-                console.error('채팅방 생성 실패');
-            }
-        } catch (error) {
-            console.error('채팅방 생성 중 오류 발생:', error);
+    const [isPrivate, setIsPrivate] = useState(true); 
+    const [showModal, setShowModal] = useState(false);
+    const [chatName, setChatName] = useState('');
+
+    // 채팅방
+    const handleChatClick = () => {
+        if (selectedUsers.length === 1) {
+            createChatRoom(`${userId}와 ${selectedUsers[0].name} 1:1 채팅방`, isPrivate);
+        } else {
+            setShowModal(true);
         }
     };
+    
+    // 모달 닫기
+    const handleCloseModal = () => {
+        setShowModal(false);
+        setChatName(''); 
+        setIsPrivate(true); 
+    };
+
+    // 그룹 채팅방
+    const handleGroupChatCreate = () => {
+        if (!chatName) {
+            console.log('채팅방 이름이 입력되지 않았습니다');
+            return;
+        }
+
+        createChatRoom(chatName, isPrivate);
+        setShowModal(false);
+    };
+
+  const createChatRoom = async (name: string, isPrivate: boolean) => {
+    try {
+      const selectedUserIds = selectedUsers.map(user => user.id);
+
+      const response = await fetch('https://fastcampus-chat.net/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
+          'serverId': `${process.env.NEXT_PUBLIC_SERVER_KEY}`,
+        },
+        body: JSON.stringify({
+          name,
+          users: [userId, ...selectedUserIds],
+          isPrivate,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const generatedChatId = `group_${data.id}`;
+        setNewChatId(generatedChatId);
+        router.push(`/chating/${data.id}?chatId=${generatedChatId}`);
+      } else {
+        console.error('채팅방 생성 실패');
+      }
+    } catch (error) {
+      console.error('채팅방 생성 중 오류 발생:', error);
+    }
+  };
 
     const handleUserSelect = (user: User) => {
         if (selectedUsers.some(selectedUser => selectedUser.id === user.id)) {
@@ -93,7 +95,6 @@ function UserSelect() {
             setSelectedUsers(prevSelectedUsers => [...prevSelectedUsers, user]);
         }
     };
-
 
     const getUsers = async () => {
         try {
@@ -153,14 +154,36 @@ function UserSelect() {
                           )}
                 </UserList>
                 {selectedUsers.length > 0 && (
-                    <ChatButtonWrapper>
-                        <ChatButton onClick={handleChatClick}>
-                            채팅하기
-                        </ChatButton>
-                    </ChatButtonWrapper>
+                <ChatButtonWrapper>
+                    <ChatButton onClick={handleChatClick}>채팅하기</ChatButton>
+                </ChatButtonWrapper>
                 )}
+            {showModal && (
+                <Modal>
+                    <ModalContent>
+                        <h2>채팅방 정보 입력</h2>
+                        <label>채팅방 이름</label>
+                        <input
+                            type="text"
+                            value={chatName}
+                            onChange={(e) => setChatName(e.target.value)}
+                        />
+                        {selectedUsers.length > 1 && (
+                            <>
+                                <label>Private</label>
+                                <input
+                                    type="checkbox"
+                                    checked={isPrivate}
+                                    onChange={() => setIsPrivate(!isPrivate)}
+                                />
+                            </>
+                        )}
+                        <ModalButton onClick={handleCloseModal}>취소</ModalButton>
+                        <ModalButton onClick={handleGroupChatCreate}>완료</ModalButton>
+                    </ModalContent>
+                </Modal>
+            )}
             </UsersWrap>
-
         </>
     );
 }
@@ -300,4 +323,62 @@ const ChatButton = styled.button`
     border-radius: 5px;
     cursor: pointer;
     margin-top: 1rem;
+`;
+
+const Modal = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ModalContent = styled.div`
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
+  text-align: center;
+
+  h2 {
+    margin-bottom: 20px;
+    color: #00956e;
+  }
+
+  label {
+    display: block;
+    margin-top: 10px;
+  }
+
+  input {
+    margin-top: 5px;
+  }
+`;
+
+const ModalButton = styled.button`
+  background-color: #00956e;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 1rem;
+`;
+
+const PrivateCheckbox = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 1rem;
+
+  input {
+    margin-right: 0.5rem;
+  }
+
+  label {
+    font-size: 1rem;
+  }
 `;

@@ -29,9 +29,17 @@ const MyChats = ({ userType }: { userType: string }) => {
   const router = useRouter();
   const userId = typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
 
+  // react-query로 조건부 fetch
+  const { data, isLoading } = useQuery<Chat[]>({
+    queryKey: ['getChatsKey'],
+    queryFn: userType === 'my' ? getMyChats : getAllChats,
+    refetchOnWindowFocus: false,
+    refetchInterval: 1000,
+  });
+
   const navigateToUserSelection = () => {
     router.push('userSelect');
-};
+  };
 
   // 채팅방 들어갈 때 새 유저면 채팅방에 새로 참여시키고 기존 유저는 그냥 들어가기
   const enterChatRoom = (chat: Chat) => {
@@ -41,12 +49,13 @@ const MyChats = ({ userType }: { userType: string }) => {
         setChatModalOpen(true);
         console.log('새로 입장 성공');
       } else {
-        router.push(`/chating/${chat.id}`);
+        router.push(`/chatting/${chat.id}`);
         console.log('기존 유저 들어가기 성공');
       }
     }
   };
 
+  // 입장하기 버튼 눌렀을 때 채팅에 참여시키는 함수
   const onEnterHandler = () => {
     if (selectedChat && selectedChat.id) {
       partChats(selectedChat.id);
@@ -57,18 +66,8 @@ const MyChats = ({ userType }: { userType: string }) => {
       alert('입장 실패');
     }
   };
-  // react-query로 조건부 fetch
-  const { data, isLoading } = useQuery<Chat[]>({
-    queryKey: ['getChatsKey'],
-    queryFn: userType === 'my' ? getMyChats : getAllChats,
-    refetchOnWindowFocus: false,
-    refetchInterval: 1000,
-  });
 
-  const onAddHandler = () => {
-    setAddChatOpen(!addChatOpen);
-  };
-
+  // 입장하기 모달 여닫는 함수
   const onModalHandler = () => {
     setChatModalOpen(!chatModalOpen);
   };
@@ -135,6 +134,11 @@ const Wrapper = styled.div`
   gap: 1rem;
 
   padding: 3rem;
+
+  @media screen and (max-width: 768px) {
+    width: 32rem;
+    margin: 2rem;
+  }
 `;
 
 const ChatHeader = styled.div`

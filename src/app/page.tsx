@@ -10,7 +10,6 @@ import React from 'react';
 import { getCookie } from '@/lib/cookie';
 import { useRecoilState } from 'recoil';
 import { ConnectUserIdList } from '@/components/Users/UserListStore';
-
 interface User {
   id: string;
   password: string;
@@ -43,11 +42,13 @@ const Users = () => {
 
   /**사용자 검색 */
   const [userInput, setUserInput] = useState('');
+
   const getInputValue = React.useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setUserInput(e.target.value);
   }, []);
 
   const searched = users.filter((user) => user.name.includes(userInput));
+
   const clearSearchInput = React.useCallback(() => {
     setUserInput('');
   }, []);
@@ -56,8 +57,11 @@ const Users = () => {
   const connectUserIdListRef = useRef<ConnectUserIdListIF>({
     users: [],
   });
+
   const [connectUserIdList, setConnectUserIdList] = useRecoilState(ConnectUserIdList);
+
   const accessToken = getCookie('accessToken');
+
   const socket = io(`https://fastcampus-chat.net/server`, {
     extraHeaders: {
       Authorization: `Bearer ${accessToken}`,
@@ -66,12 +70,27 @@ const Users = () => {
   });
 
   useEffect(() => {
-    socket.on('users-server-to-client', (usersIdList) => {
-      if (JSON.stringify(usersIdList.users) !== JSON.stringify(connectUserIdListRef.current.users)) {
-        connectUserIdListRef.current = usersIdList;
-        setConnectUserIdList(usersIdList);
-      }
-    });
+    try {
+      socket.on('connect', () => {
+        console.log('Socket server connected');
+      });
+
+      socket.on('disconnect', () => {
+        console.log('server disconnect');
+      });
+
+      socket.on('users-server-to-client', (usersIdList) => {
+        if (JSON.stringify(usersIdList.users) !== JSON.stringify(connectUserIdListRef.current.users)) {
+          connectUserIdListRef.current = usersIdList;
+          setConnectUserIdList(usersIdList);
+        }
+      });
+      return () => {
+        socket.disconnect();
+      };
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
 
   return (
@@ -156,7 +175,6 @@ const SearchUserBox = styled.div`
   background-color: white;
 
   border-radius: 20px;
-
   box-shadow: ${({ theme }) => theme.shadow.search};
 
   height: 3.5rem;
@@ -179,7 +197,6 @@ const SearchButton = styled.div`
 
   border-top-left-radius: 15px;
   border-bottom-left-radius: 15px;
-
   box-shadow: ${({ theme }) => theme.shadow.search};
 `;
 

@@ -5,8 +5,8 @@ import React, { useEffect, useState } from 'react';
 import MessageContainer from './MessageContainer';
 import io from 'socket.io-client';
 import { useRouter, usePathname } from 'next/navigation';
-import ChatingNavigation from './ChatingNavigation';
-import ChatingModal from './ChatingModal';
+import ChattingNavigation from './ChattingNavigation';
+import ChattingModal from './ChattingModal';
 import { getCookie } from '@/lib/cookie';
 
 interface Message {
@@ -22,7 +22,7 @@ interface User {
   picture: string;
 }
 
-export default function ChatingPage() {
+export default function ChattingPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [chatName, setChatName] = useState<string>('');
@@ -163,7 +163,7 @@ export default function ChatingPage() {
     const date = new Date(createdAt);
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
-    const day = date.getDate() + 1;
+    const day = date.getDate();
     return `${year}년 ${month}월 ${day}일`;
   };
 
@@ -173,8 +173,8 @@ export default function ChatingPage() {
         <Loading />
       ) : (
         <>
-          <ChatingNavigation chatName={chatName} usersLength={users.length} />
-          <ChatingModal users={users} chatId={chatId} socket={socket} />
+          <ChattingNavigation chatName={chatName} usersLength={users.length} />
+          <ChattingModal users={users} chatId={chatId} socket={socket} />
 
           <MessagesContainer>
             {messages
@@ -316,6 +316,7 @@ const YourMessageText = styled.div`
   margin-left: 40px;
 
   font-size: 16px;
+  word-break: break-all;
 
   border-radius: 15px;
 
@@ -341,6 +342,7 @@ const MyMessageWrapper = styled.div`
 
 const MyMessageText = styled.div`
   max-width: 75%;
+  height: auto;
   padding: 10px;
 
   margin-right: 10px;
@@ -364,7 +366,7 @@ const MyMessageTime = styled.div`
 
 const Loading = styled.div`
   position: absolute;
-  top: 50%;
+  top: 30%;
   left: 50%;
   transform: translate(-50%, -50%);
 
@@ -398,6 +400,8 @@ const NoticeMessageWrapper = styled.div`
 `;
 
 const NoticeText = styled.div`
+  height: auto;
+
   padding: 10px 15px;
   border-radius: 15px;
   text-align: center;

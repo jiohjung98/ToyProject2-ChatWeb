@@ -105,7 +105,7 @@ export default function ChattingPage() {
 
   useEffect(() => {
     getUsers();
-  }, [getUserToggle]);
+  }, []);
 
   useEffect(() => {
     const FetchMessagesInterval = setInterval(() => {
@@ -133,12 +133,12 @@ export default function ChattingPage() {
 
       socket.on('join', (data) => {
         console.log(data, 'join');
-        setGetUserToggle(!getUserToggle);
+        getUsers();
       });
 
       socket.on('leave', (data) => {
         console.log(data, 'leave');
-        setGetUserToggle(!getUserToggle);
+        getUsers();
       });
       return () => {
         socket.disconnect();

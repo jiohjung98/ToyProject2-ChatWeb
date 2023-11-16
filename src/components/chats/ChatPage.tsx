@@ -16,6 +16,8 @@ import { sortTime } from './useFormatCreatedAt';
 import { getMyChats, getAllChats, partChats } from './getChats';
 import { useQuery } from '@tanstack/react-query';
 import EnterChatRoomModal from './EnterChatRoomModal';
+import io from 'socket.io-client';
+import { getCookie } from '@/lib/cookie';
 
 const MyChats = ({ userType }: { userType: string }) => {
   const [addChatOpen, setAddChatOpen] = useState(false);
@@ -42,12 +44,51 @@ const MyChats = ({ userType }: { userType: string }) => {
   };
 
   // 채팅방 들어갈 때 새 유저면 채팅방에 새로 참여시키고 기존 유저는 그냥 들어가기
-  const enterChatRoom = (chat: Chat) => {
+  const enterChatRoom = async (chat: Chat) => {
     if (chat.id && chat.users) {
       if (chat.users.every((user) => user.id !== userId)) {
         setSelectedChat(chat);
         setChatModalOpen(true);
         console.log('새로 입장 성공');
+
+        // 채팅방 입장 공지
+        const accessToken = getCookie('accessToken');
+
+        const response = await fetch(`https://fastcampus-chat.net/user?userId=${userId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+            serverId: `${process.env.NEXT_PUBLIC_SERVER_KEY}`,
+          },
+        });
+        const data = await response.json();
+        const userName = data.name;
+
+        const socket = await io(`wss://fastcampus-chat.net/chat?chatId=${chat.id}`, {
+          extraHeaders: {
+            Authorization: `Bearer ${accessToken}`,
+            serverId: `${process.env.NEXT_PUBLIC_SERVER_KEY}`,
+          },
+        });
+
+        try {
+          socket.on('connect', () => {
+            console.log('Socket connected');
+          });
+
+          socket.emit('message-to-server', `notice09:${userName}님이 채팅방에 입장하였습니다. `);
+
+          socket.on('disconnect', () => {
+            console.log('disconnect');
+          });
+
+          return () => {
+            socket.disconnect();
+          };
+        } catch (error) {
+          console.log(error);
+        }
       } else {
         router.push(`/chatting/${chat.id}`);
         console.log('기존 유저 들어가기 성공');

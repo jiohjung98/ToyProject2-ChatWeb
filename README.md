@@ -120,7 +120,7 @@ fascinating-valkyrie-a7121b.netlify.app
 <div style="display: flex;">
   <img src="https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white" />
   <img src="https://img.shields.io/badge/css3-1572B6?style=for-the-badge&logo=css3&logoColor=white" />
-  next
+  <img src="https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=Next.js&logoColor=white" />
   <img src="https://img.shields.io/badge/Recoil-oran?style=for-the-badge&logo=Recoil" />
   <img src="https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white" />
 </div>
@@ -128,8 +128,9 @@ fascinating-valkyrie-a7121b.netlify.app
 ### Deploy
 
 <div style="display: flex;">
-  netlify
-  </div>
+  <img src="https://img.shields.io/badge/netlify-00C7B7?style=for-the-badge&logo=Netlify&logoColor=white" />
+
+</div>
 
 ### Communication
 

@@ -2,6 +2,9 @@
 
 ## 📌 배포 사이트
 
+<div>
+  <img src="https://img.shields.io/badge/Deploy-Chat-%2300956e?logo=Netlify&logoColor=%239a9a9a&labelColor=black&color=%2300956e&link=fascinating-valkyrie-a7121b.netlify.app" />
+</div>
 fascinating-valkyrie-a7121b.netlify.app
 
 <details>

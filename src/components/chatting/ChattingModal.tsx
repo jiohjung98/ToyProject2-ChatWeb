@@ -53,7 +53,7 @@ export default function ChattingModal(props: ChattingModalProps) {
     if (userId) {
       await props.socket.emit('message-to-server', `notice09:${userName}님이 채팅방을 나갔습니다.`);
     }
-    router.back();
+    router.push('/');
   };
 
   return (

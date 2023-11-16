@@ -168,7 +168,7 @@ function UserSelect() {
   const getUsers = async () => {
     try {
       let res = await instance.get<unknown, User[]>('/users');
-      res = res.filter((user) => user.id !== sessionStorage.getItem('userId'));
+      res = res.filter((user) => user.id !== localStorage.getItem('userId'));
       setUsers(res);
       setLoading(false);
     } catch (error) {

@@ -116,10 +116,6 @@ const ReceiveTime = styled.p`
   margin: 0;
   font-size: ${({ theme }) => theme.fontSize.sm};
   color: #cdcdcd;
-
-  @media (max-width: 768px) {
-    display: none;
-  }
 `;
 const TypeCheckBox = styled.div`
   text-align: center;

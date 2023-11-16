@@ -20,7 +20,6 @@ import io from 'socket.io-client';
 import { getCookie } from '@/lib/cookie';
 
 const MyChats = ({ userType }: { userType: string }) => {
-  const [addChatOpen, setAddChatOpen] = useState(false);
   const [chatModalOpen, setChatModalOpen] = useState(false);
   // 검색창에 입력 중에 올바른 검색어 비교 위해 Input 값 전역 상태 관리
   const filterInputValue = useRecoilValue(searchInputState);
@@ -44,7 +43,7 @@ const MyChats = ({ userType }: { userType: string }) => {
   };
 
   // 채팅방 들어갈 때 새 유저면 채팅방에 새로 참여시키고 기존 유저는 그냥 들어가기
-  const enterChatRoom = async (chat: Chat) => {
+  const enterChatRoom = (chat: Chat) => {
     if (chat.id && chat.users) {
       if (chat.users.every((user) => user.id !== userId)) {
         setSelectedChat(chat);
@@ -123,12 +122,6 @@ const MyChats = ({ userType }: { userType: string }) => {
       </ChatHeader>
       <SearchMyChat userType={userType} />
       <ChatList>
-        <EnterChatRoomModal
-          isOpen={chatModalOpen}
-          onEnterClick={onEnterHandler}
-          onCancelClick={onModalHandler}
-          selectedChat={selectedChat}
-        />
         {isLoading && <Loading />}
         {userId && data ? (
           filterInputValue ? (
@@ -160,8 +153,18 @@ const MyChats = ({ userType }: { userType: string }) => {
               />
             ))
           )
-        ) : null}
+        ) : (
+          <NoUserWrap>
+            <NoUserText>내 채팅방이 존재하지 않습니다.</NoUserText>
+          </NoUserWrap>
+        )}
       </ChatList>
+      <EnterChatRoomModal
+        isOpen={chatModalOpen}
+        onEnterClick={onEnterHandler}
+        onCancelClick={onModalHandler}
+        selectedChat={selectedChat}
+      />
     </Wrapper>
   );
 };

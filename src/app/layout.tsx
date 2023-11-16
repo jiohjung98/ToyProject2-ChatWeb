@@ -13,6 +13,7 @@ import Move from '@/components/Move';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { getCookie } from '@/lib/cookie';
+import Head from './head';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const queryClient = new QueryClient();
@@ -40,6 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <html lang="en">
           <StyledComponentsRegistry>
             <ThemeProvider theme={theme}>
+              <Head />
               <Body>
                 <Container>
                   {shouldRenderMoveComponent && <Move />}

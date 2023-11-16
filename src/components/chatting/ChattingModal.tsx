@@ -2,7 +2,7 @@
 
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
-import { ChatingModalToggle } from '@/store/atoms';
+import { ChattingModalToggle, UserNameRecoil } from '@/store/atoms';
 import { useRouter } from 'next/navigation';
 import InviteImg from '../../../public/assets/InviteImg.svg';
 import { getCookie } from '@/lib/cookie';
@@ -14,15 +14,16 @@ interface User {
   picture: string;
 }
 
-interface ChatingModalProps {
+interface ChattingModalProps {
   users: User[];
   chatId: string;
   socket: Socket;
 }
 
 //type
-export default function ChatingModal(props: ChatingModalProps) {
-  const [modalToggle, setModalToggle] = useRecoilState<boolean>(ChatingModalToggle);
+export default function ChattingModal(props: ChattingModalProps) {
+  const [modalToggle, setModalToggle] = useRecoilState<boolean>(ChattingModalToggle);
+  const [userName, setUserName] = useRecoilState<string | undefined>(UserNameRecoil);
   const router = useRouter();
 
   const accessToken = getCookie('accessToken');
@@ -37,7 +38,7 @@ export default function ChatingModal(props: ChatingModalProps) {
     return undefined;
   };
 
-  const leaveChating = async () => {
+  const leaveChatting = async () => {
     await fetch('https://fastcampus-chat.net/chat/leave', {
       method: 'PATCH',
       headers: {
@@ -50,8 +51,7 @@ export default function ChatingModal(props: ChatingModalProps) {
       }),
     });
     if (userId) {
-      const userName = findUserName(userId);
-      props.socket.emit('message-to-server', `notice09:${userName}님이 채팅방을 나갔습니다.`);
+      await props.socket.emit('message-to-server', `notice09:${userName}님이 채팅방을 나갔습니다.`);
     }
     router.back();
   };
@@ -73,22 +73,22 @@ export default function ChatingModal(props: ChatingModalProps) {
                 <UserName>{user.username}</UserName>
               </UserWrapper>
             ))}
-            <UserInviteWrapper>
+            {/* <UserInviteWrapper>
               <UserInviteImg />
               <UserInviteName>초대하기</UserInviteName>
-            </UserInviteWrapper>
+            </UserInviteWrapper> */}
           </UsersWrapper>
         ) : (
           ''
         )}
-        <ChatingLeave
+        <ChattingLeave
           onClick={() => {
             setModalToggle(!modalToggle);
-            leaveChating();
+            leaveChatting();
           }}
         >
           채팅방 나가기
-        </ChatingLeave>
+        </ChattingLeave>
       </ModalWrapper>
 
       <ModalBackground
@@ -200,7 +200,7 @@ const UserInviteName = styled.div`
   cursor: pointer;
 `;
 
-const ChatingLeave = styled.div`
+const ChattingLeave = styled.div`
   font-size: 30px;
   color: #950000;
 

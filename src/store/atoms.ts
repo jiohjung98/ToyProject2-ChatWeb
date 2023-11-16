@@ -1,7 +1,7 @@
 import { atom } from 'recoil';
 
-export const ChatingModalToggle = atom({
-  key: 'ChatingModalToggle',
+export const ChattingModalToggle = atom({
+  key: 'ChattingModalToggle',
   default: false,
 });
 
@@ -23,4 +23,9 @@ export const UserProfile = atom<User>({
 export const UserProfileModal = atom<boolean>({
   key: 'UserProfileModal',
   default: false,
+});
+
+export const UserNameRecoil = atom<string | undefined>({
+  key: 'UserNameRecoil',
+  default: '',
 });

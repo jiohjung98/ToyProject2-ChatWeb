@@ -29,7 +29,7 @@ export default function MessageContainer(props: MessageContainerProps) {
           setMessage(e.target.value);
         }}
       />
-      <SendArrow onClick={MessageSend} />
+      <SendaArrow onClick={MessageSend} />
     </MessageWrapper>
   );
 }
@@ -67,6 +67,8 @@ const SendaArrow = styled(SendArrow)`
 
   border-radius: 25px;
   border: none;
+
+  cursor: pointer;
 
   background-color: #fff;
 `;

@@ -21,13 +21,16 @@ interface User {
   name: string;
   picture: string;
 }
+
 interface UserProfileModalProps {
   clickModal: () => void;
   user: User;
 }
+
 interface ResponseBody {
   chats: [{ id: string; name: string }];
 }
+
 const UserProfileModal = ({ clickModal, user }: UserProfileModalProps) => {
   const router = useRouter();
   const { id, name, picture } = user;
@@ -35,30 +38,32 @@ const UserProfileModal = ({ clickModal, user }: UserProfileModalProps) => {
   const userId = localStorage.getItem('userId');
   const [myChats, setMyChats] = useState<Chat[]>([]);
   const connectUserIdList = useRecoilValue(ConnectUserIdList);
+
   const enterChatRoom = (chat: Chat) => {
     if (chat.id && chat.users) {
       const users = chat.users
         .map((user) => `[name:${user.username}, id:${user.id}, picture:${user.picture}]`)
         .join(',');
       const latestMessageQuery = JSON.stringify(chat.latestMessage);
-      router.push(`/chating/${chat.id}`);
+      router.push(`/chatting/${chat.id}`);
     }
   };
+
   const handleChatClick = async () => {
     try {
       const res = await instance.get<unknown, ResponseBody>(`chat`);
       if (res) {
         const { chats } = res;
-        const chatName = `1:1 Chat with ${user.name}`;
+
+         // 로그인 사용자와 선택된 사용자의 ID를 정렬하여 채팅방 이름 생성
+         const sortedUserIds = [userId, user.id].sort();
+         const chatName = `1:1 Chat ${sortedUserIds.join('_')}`;
         const existingChat = chats ? chats.find((chat) => chat.name === chatName) : null;
         if (existingChat) {
           console.log('이미 채팅방이 존재해요. 그 채팅방으로 이동하겠습니다.');
-          console.log(existingChat);
-          console.log(userId);
           enterChatRoom(existingChat);
         } else {
-          alert('채팅방 없음');
-          console.log('채팅방이 없음');
+          console.log('채팅방이 없어요. 새로 채팅방을 만들겠습니다.');
           const response = await fetch('https://fastcampus-chat.net/chat', {
             method: 'POST',
             headers: {
@@ -75,10 +80,9 @@ const UserProfileModal = ({ clickModal, user }: UserProfileModalProps) => {
           console.log(user.id, userId);
           if (response.ok) {
             // 생성된 채팅 방으로 이동
-            alert(user.id);
             const data = await response.json();
             const generatedChatId = `1on1_${user.id}_${userId}`;
-            router.push(`/chating/${data.id}`);
+            router.push(`/chatting/${data.id}`);
           } else {
             console.error('Failed to create chat room');
           }
@@ -90,7 +94,7 @@ const UserProfileModal = ({ clickModal, user }: UserProfileModalProps) => {
       console.error(error);
     }
   };
-  
+
   return (
     <UserModalBox onClick={clickModal}>
       <ModalContent onClick={(e) => e.stopPropagation()}>
@@ -110,48 +114,62 @@ const UserProfileModal = ({ clickModal, user }: UserProfileModalProps) => {
               )}
             </UserState>
           </UserInfo>
-          <ToChating onClick={handleChatClick}>
+          <ToChatting onClick={handleChatClick}>
             <ImBubble size="30" className="chatIcon" />
             <ChatText>1:1 채팅하기</ChatText>
-          </ToChating>
+          </ToChatting>
         </ModalMain>
       </ModalContent>
     </UserModalBox>
   );
 };
+
 export default UserProfileModal;
+
 const UserModalBox = styled.div`
   position: fixed;
   top: 0;
   left: 0;
+
   width: 100%;
   height: 100%;
+
   background-color: rgba(0, 0, 0, 0.4);
+
   display: flex;
   justify-content: center;
   align-items: center;
+
   z-index: 10000;
 `;
 const ModalContent = styled.div`
   background-color: white;
+
   width: 600px;
   height: 500px;
+
   border-radius: 5%;
+
   margin: 0 2rem;
+
   display: flex;
   flex-direction: column;
 `;
 const CloseButton = styled.div`
   margin: 1.5rem 2.5rem 0 auto;
+
   cursor: pointer;
+
   .closeIcon {
     color: ${({ theme }) => theme.color.darkGray};
   }
+
   &:hover .closeIcon {
     color: ${({ theme }) => theme.color.mainGreen};
     transition: 0.4s;
   }
 `;
+
 const ModalMain = styled.div`
   display: flex;
   flex-direction: column;
@@ -159,45 +177,59 @@ const ModalMain = styled.div`
   align-items: center;
   gap: 1.5rem;
 `;
+
 const UserImg = styled.img`
   width: 150px;
   height: 150px;
+
   border-radius: 70%;
+
   overflow: hidden;
+
   margin-top: 5px;
 `;
+
 const UserInfo = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
+
 const UserName = styled.h1`
   font-size: ${({ theme }) => theme.fontSize.title};
+
   margin: 0;
 `;
-const ToChating = styled.div`
+
+const ToChatting = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
   cursor: pointer;
+
   &:hover .chatIcon {
     color: ${({ theme }) => theme.color.mainGreen};
     transition: 0.4s;
   }
 `;
+
 const ChatText = styled.p`
   font-weight: 500;
   font-size: ${({ theme }) => theme.fontSize.md};
 `;
+
 const UserState = styled.div`
   display: flex;
   align-items: center;
   gap: 0.7rem;
 `;
+
 const UserStateText = styled.p`
   color: ${({ theme }) => theme.color.darkGray};
   font-size: ${({ theme }) => theme.fontSize.sm};
 `;
+
 const UserStateTextBlack = styled.p`
   color: black;
 `;

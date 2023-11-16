@@ -49,7 +49,7 @@ const MyChats = ({ userType }: { userType: string }) => {
         setChatModalOpen(true);
         console.log('새로 입장 성공');
       } else {
-        router.push(`/chating/${chat.id}`);
+        router.push(`/chatting/${chat.id}`);
         console.log('기존 유저 들어가기 성공');
       }
     }
@@ -60,7 +60,7 @@ const MyChats = ({ userType }: { userType: string }) => {
     if (selectedChat && selectedChat.id) {
       partChats(selectedChat.id);
       setChatModalOpen(false);
-      router.push(`/chating/${selectedChat.id}`);
+      router.push(`/chatting/${selectedChat.id}`);
       console.log('새로 입장 성공');
     } else {
       alert('입장 실패');
@@ -134,11 +134,6 @@ const Wrapper = styled.div`
   gap: 1rem;
 
   padding: 3rem;
-
-  @media screen and (max-width: 768px) {
-    width: 32rem;
-    margin: 2rem;
-  }
 `;
 
 const ChatHeader = styled.div`

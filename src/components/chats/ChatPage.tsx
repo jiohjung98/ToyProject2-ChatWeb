@@ -16,6 +16,8 @@ import { sortTime } from './useFormatCreatedAt';
 import { getMyChats, getAllChats, partChats } from './getChats';
 import { useQuery } from '@tanstack/react-query';
 import EnterChatRoomModal from './EnterChatRoomModal';
+import io from 'socket.io-client';
+import { getCookie } from '@/lib/cookie';
 
 const MyChats = ({ userType }: { userType: string }) => {
   const [addChatOpen, setAddChatOpen] = useState(false);
@@ -56,12 +58,51 @@ const MyChats = ({ userType }: { userType: string }) => {
   };
 
   // 입장하기 버튼 눌렀을 때 채팅에 참여시키는 함수
-  const onEnterHandler = () => {
+  const onEnterHandler = async () => {
     if (selectedChat && selectedChat.id) {
       partChats(selectedChat.id);
       setChatModalOpen(false);
-      router.push(`/chatting/${selectedChat.id}`);
-      console.log('새로 입장 성공');
+      // 채팅방 입장 공지
+      const accessToken = getCookie('accessToken');
+
+      const response = await fetch(`https://fastcampus-chat.net/user?userId=${userId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+          serverId: `${process.env.NEXT_PUBLIC_SERVER_KEY}`,
+        },
+      });
+      const data = await response.json();
+      const userName = data.user.name;
+
+      const socket = await io(`wss://fastcampus-chat.net/chat?chatId=${selectedChat.id}`, {
+        extraHeaders: {
+          Authorization: `Bearer ${accessToken}`,
+          serverId: `${process.env.NEXT_PUBLIC_SERVER_KEY}`,
+        },
+      });
+
+      try {
+        socket.on('connect', () => {
+          console.log('Socket connected');
+          setInterval(() => {
+            socket.disconnect();
+            router.push(`/chatting/${selectedChat.id}`);
+            console.log('새로 입장 성공');
+          }, 2000);
+        });
+
+        socket.emit('message-to-server', `notice09:${userName}님이 채팅방에 입장하였습니다. `);
+
+        socket.on('disconnect', () => {
+          console.log('disconnect');
+        });
+
+        setInterval;
+      } catch (error) {
+        console.log(error);
+      }
     } else {
       alert('입장 실패');
     }

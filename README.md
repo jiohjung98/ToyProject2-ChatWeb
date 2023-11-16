@@ -15,19 +15,19 @@
 
 ## **[필수 구현사항]**
 
-- [ ] `useState` 또는 `useReducer`를 활용한 상태 관리 구현
-- [ ] `Sass`, `styled-component`, `emotion`, `Chakra UI`, `tailwind CSS` 등을 활용한 스타일 구현
-- [ ] `react` 상태를 통한 CRUD 구현
-- [ ] 상태에 따라 달라지는 스타일 구현
-- [ ] `custom hook`을 통한 비동기 처리 구현
-- [ ] 유저인증 시스템(로그인, 회원가입) 구현
-- [ ] `jwt`등의 유저 인증 시스템 (로그인, 회원가입 기능)
-- [ ] 소켓을 이용한 채팅 구현
+- [X] `useState` 또는 `useReducer`를 활용한 상태 관리 구현
+- [X] `Sass`, `styled-component`, `emotion`, `Chakra UI`, `tailwind CSS` 등을 활용한 스타일 구현
+- [X] `react` 상태를 통한 CRUD 구현
+- [X] 상태에 따라 달라지는 스타일 구현
+- [X] `custom hook`을 통한 비동기 처리 구현
+- [X] 유저인증 시스템(로그인, 회원가입) 구현
+- [X] `jwt`등의 유저 인증 시스템 (로그인, 회원가입 기능)
+- [X] 소켓을 이용한 채팅 구현
 
 ## **[선택 구현사항]**
 
-- [ ] `Next.js`를 활용한 서버 사이드 렌더링 구현
-- [ ] `typescript`를 활용한 앱 구현
+- [X] `Next.js`를 활용한 서버 사이드 렌더링 구현
+- [X] `typescript`를 활용한 앱 구현
 - [ ] `storybook`을 활용한 디자인 시스템 구현
 - [ ] `jest`를 활용한 단위 테스트 구현
 

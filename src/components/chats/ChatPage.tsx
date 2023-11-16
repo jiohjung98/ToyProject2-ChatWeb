@@ -113,7 +113,11 @@ const MyChats = ({ userType }: { userType: string }) => {
               />
             ))
           )
-        ) : null}
+        ) : (
+          <NoUserWrap>
+            <NoUserText>내 채팅방이 존재하지 않습니다.</NoUserText>
+          </NoUserWrap>
+        )}
       </ChatList>
       <EnterChatRoomModal
         isOpen={chatModalOpen}

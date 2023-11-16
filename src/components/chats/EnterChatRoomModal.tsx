@@ -5,7 +5,6 @@ import { EnterChatRoomModalProps } from './chatsStore';
 import { textModalData } from './ModalTextData';
 
 const EnterChatRoomModal = ({ isOpen, onEnterClick, onCancelClick, selectedChat }: EnterChatRoomModalProps) => {
-  // onEnterClick() props로 넘겨주기
   const handleEnterClick = () => {
     onEnterClick();
   };
@@ -13,7 +12,8 @@ const EnterChatRoomModal = ({ isOpen, onEnterClick, onCancelClick, selectedChat 
     onCancelClick();
   };
   return (
-    <Wrapper style={{ display: isOpen ? 'block' : 'none' }}>
+    <Container style={{ display: isOpen ? 'flex' : 'none' }}>
+      <Overlay onClick={handleCancelClick} />
       <ModalContainer>
         <ModalMainText>
           <span>{textModalData.enter}</span>
@@ -23,43 +23,45 @@ const EnterChatRoomModal = ({ isOpen, onEnterClick, onCancelClick, selectedChat 
           <CancelBtn onClick={handleCancelClick}>{textModalData.cancelBtn}</CancelBtn>
         </ModalBtnContainer>
       </ModalContainer>
-    </Wrapper>
+    </Container>
   );
 };
 
-export default EnterChatRoomModal;
-
-const Wrapper = styled.div`
+const Container = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-
+  height: 100%;
   display: flex;
-  flex-direction: column;
   justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.4); /* 어두운 배경 색상 */
+  z-index: 10000;
+`;
 
-  background-color: rgba(0, 0, 0, 0.4);
+const Overlay = styled.div`
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
 `;
 
 const ModalContainer = styled.div`
   position: absolute;
-  top: 40%;
-  left: 35%;
-
-  width: 280px;
-  height: 140px;
-
   border: none;
   border-radius: 0.6rem;
   background-color: ${({ theme }) => theme.color.mainGreen};
   box-shadow: ${({ theme }) => theme.shadow.list};
-
-  z-index: 10000;
 `;
+
+export default EnterChatRoomModal;
 
 const ModalMainText = styled.div`
   margin: 1rem 0 0;
   padding: 1.2rem;
 
-  height: 60%;
+  height: 4rem;
 
   border-bottom: 1px solid #fff;
   span {
@@ -71,7 +73,7 @@ const ModalMainText = styled.div`
 `;
 
 const ModalBtnContainer = styled.div`
-  height: 40%;
+  height: 3rem;
 
   display: flex;
   justify-content: center;

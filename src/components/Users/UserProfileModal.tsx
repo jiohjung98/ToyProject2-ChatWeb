@@ -50,12 +50,17 @@ const UserProfileModal = ({ clickModal, user }: UserProfileModalProps) => {
       if (res) {
         const { chats } = res;
 
+        console.log(chats);
+
         // 로그인 사용자와 선택된 사용자의 ID를 정렬하여 채팅방 이름 생성
         const sortedUserIds = [userId, user.id].sort();
         const chatName = `1:1 Chat ${sortedUserIds.join('_')}`;
+        console.log(chatName);
+
         const existingChat = chats ? chats.find((chat) => chat.name === chatName) : null;
         if (existingChat) {
           console.log('이미 채팅방이 존재해요. 그 채팅방으로 이동하겠습니다.');
+          console.log(chatName);
           enterChatRoom(existingChat);
         } else {
           console.log('채팅방이 없어요. 새로 채팅방을 만들겠습니다.');
@@ -67,12 +72,13 @@ const UserProfileModal = ({ clickModal, user }: UserProfileModalProps) => {
               serverId: `${process.env.NEXT_PUBLIC_SERVER_KEY}`,
             },
             body: JSON.stringify({
-              name: `1:1 Chat with ${user.name}`,
-              users: [user.id],
+              name: chatName,
+              users: [userId, user.id],
               isPrivate: true,
             }),
           });
           console.log(user.id, userId);
+          console.log(chatName);
           if (response.ok) {
             // 생성된 채팅 방으로 이동
             const data = await response.json();

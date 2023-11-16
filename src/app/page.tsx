@@ -23,8 +23,11 @@ interface ConnectUserIdListIF {
 }
 
 const Users = () => {
+  const [isRightWay, setIsRightWay] = useState<boolean>(false);
   const [users, setUsers] = useState<User[] | []>([]);
   const [loading, setLoading] = useState(true);
+  const accessToken = getCookie('accessToken');
+
   const getUsers = async () => {
     try {
       let res = await instance.get<unknown, User[]>('/users');
@@ -38,38 +41,13 @@ const Users = () => {
 
   useEffect(() => {
     getUsers();
-  }, []);
 
-  /**사용자 검색 */
-  const [userInput, setUserInput] = useState('');
+    if (accessToken) {
+      setIsRightWay(true);
+    } else {
+      setIsRightWay(false);
+    }
 
-  const getInputValue = React.useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setUserInput(e.target.value);
-  }, []);
-
-  const searched = users.filter((user) => user.name.includes(userInput));
-
-  const clearSearchInput = React.useCallback(() => {
-    setUserInput('');
-  }, []);
-
-  /** 접속 상태 */
-  const connectUserIdListRef = useRef<ConnectUserIdListIF>({
-    users: [],
-  });
-
-  const [connectUserIdList, setConnectUserIdList] = useRecoilState(ConnectUserIdList);
-
-  const accessToken = getCookie('accessToken');
-
-  const socket = io(`https://fastcampus-chat.net/server`, {
-    extraHeaders: {
-      Authorization: `Bearer ${accessToken}`,
-      serverId: `${process.env.NEXT_PUBLIC_SERVER_KEY}`,
-    },
-  });
-
-  useEffect(() => {
     try {
       socket.on('connect', () => {
         console.log('Socket server connected');
@@ -93,35 +71,71 @@ const Users = () => {
     }
   }, []);
 
-  return (
-    <>
-      <UsersWrap>
-        <HeaderText>사용자 목록</HeaderText>
-        <SearchUserBox>
-          <SearchButton>
-            <MdSearch className="searchIcon" size="35" color="white" />
-          </SearchButton>
-          <SearchUserInput value={userInput} onChange={getInputValue} type="text" placeholder="사용자를 검색해보세요" />
-          <ClearButton>
-            {userInput && <MdClose className="clearIcon" size="25" onClick={clearSearchInput} />}
-          </ClearButton>
-        </SearchUserBox>
-        <UserList>
-          {loading && <Loading />}
-          {searched.length !== 0
-            ? searched.map((user: User) => {
-                return <UserItem key={user.id} user={user} />;
-              })
-            : !loading && (
-                <NoUserWrap>
-                  <NoUserText>해당 사용자가 존재하지 않습니다.</NoUserText>
-                </NoUserWrap>
-              )}
-        </UserList>
-      </UsersWrap>
-      <Navigation />
-    </>
-  );
+  /**사용자 검색 */
+  const [userInput, setUserInput] = useState('');
+
+  const getInputValue = React.useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    setUserInput(e.target.value);
+  }, []);
+
+  const searched = users.filter((user) => user.name.includes(userInput));
+
+  const clearSearchInput = React.useCallback(() => {
+    setUserInput('');
+  }, []);
+
+  /** 접속 상태 */
+  const connectUserIdListRef = useRef<ConnectUserIdListIF>({
+    users: [],
+  });
+
+  const [connectUserIdList, setConnectUserIdList] = useRecoilState(ConnectUserIdList);
+
+  const socket = io(`https://fastcampus-chat.net/server`, {
+    extraHeaders: {
+      Authorization: `Bearer ${accessToken}`,
+      serverId: `${process.env.NEXT_PUBLIC_SERVER_KEY}`,
+    },
+  });
+
+  if (!isRightWay) {
+    return null;
+  } else {
+    return (
+      <>
+        <UsersWrap>
+          <HeaderText>사용자 목록</HeaderText>
+          <SearchUserBox>
+            <SearchButton>
+              <MdSearch className="searchIcon" size="35" color="white" />
+            </SearchButton>
+            <SearchUserInput
+              value={userInput}
+              onChange={getInputValue}
+              type="text"
+              placeholder="사용자를 검색해보세요"
+            />
+            <ClearButton>
+              {userInput && <MdClose className="clearIcon" size="25" onClick={clearSearchInput} />}
+            </ClearButton>
+          </SearchUserBox>
+          <UserList>
+            {loading && <Loading />}
+            {searched.length !== 0
+              ? searched.map((user: User) => {
+                  return <UserItem key={user.id} user={user} />;
+                })
+              : !loading && (
+                  <NoUserWrap>
+                    <NoUserText>해당 사용자가 존재하지 않습니다.</NoUserText>
+                  </NoUserWrap>
+                )}
+          </UserList>
+        </UsersWrap>
+        <Navigation />
+      </>
+    );
+  }
 };
 
 export default React.memo(Users);

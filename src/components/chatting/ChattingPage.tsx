@@ -105,7 +105,7 @@ export default function ChattingPage() {
 
   useEffect(() => {
     getUsers();
-  }, [getUserToggle]);
+  }, []);
 
   useEffect(() => {
     const FetchMessagesInterval = setInterval(() => {
@@ -133,14 +133,12 @@ export default function ChattingPage() {
 
       socket.on('join', (data) => {
         console.log(data, 'join');
-        setUsers(data.users);
-        setGetUserToggle(!getUserToggle);
+        getUsers();
       });
 
       socket.on('leave', (data) => {
         console.log(data, 'leave');
-        setUsers(data.users);
-        setGetUserToggle(!getUserToggle);
+        getUsers();
       });
       return () => {
         socket.disconnect();
@@ -214,8 +212,7 @@ export default function ChattingPage() {
                         ''
                       )}
                     </>
-                  ) : messages[i].userId == messages[i + 1]?.userId ||
-                    messages[i].userId == messages[i + 1]?.userId ||
+                  ) : messages[i].userId == messages[i + 1]?.userId &&
                     messages[i + 1]?.text.split(':')[0] != 'notice09' ? (
                     <>
                       <YourMessageWrapper key={message.id}>

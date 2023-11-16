@@ -1,8 +1,7 @@
-
 ## 📌 프로젝트 소개
 
-
 ## 📌 배포 사이트
+
 fascinating-valkyrie-a7121b.netlify.app
 
 <details>
@@ -14,6 +13,7 @@ fascinating-valkyrie-a7121b.netlify.app
 과제 수행 및 리뷰 기간은 별도 공지를 참고하세요!
 
 ## **[필수 구현사항]**
+
 - [ ] `useState` 또는 `useReducer`를 활용한 상태 관리 구현
 - [ ] `Sass`, `styled-component`, `emotion`, `Chakra UI`, `tailwind CSS` 등을 활용한 스타일 구현
 - [ ] `react` 상태를 통한 CRUD 구현
@@ -24,12 +24,11 @@ fascinating-valkyrie-a7121b.netlify.app
 - [ ] 소켓을 이용한 채팅 구현
 
 ## **[선택 구현사항]**
+
 - [ ] `Next.js`를 활용한 서버 사이드 렌더링 구현
 - [ ] `typescript`를 활용한 앱 구현
 - [ ] `storybook`을 활용한 디자인 시스템 구현
 - [ ] `jest`를 활용한 단위 테스트 구현
-
-
 
 </details>
 
@@ -38,7 +37,7 @@ fascinating-valkyrie-a7121b.netlify.app
 <table>
   <tr>
      <td align="center" width="150px">
-      <a href="https://github.com/turkey-kim" target="_blank">
+      <a href="https://github.com/JeongMin83" target="_blank">
         <img src="https://github.com/2weeks-team/2weeks-team/assets/39702832/8cc8e0d9-7d9b-4162-aebd-e459e996a144" alt="진정민 프로필" />
       </a>
     </td>
@@ -54,7 +53,7 @@ fascinating-valkyrie-a7121b.netlify.app
     </td>
      <td align="center" width="150px">
       <a href="https://github.com/turkey-kim" target="_blank">
-        <img src="https://github.com/2weeks-team/2weeks-team/assets/39702832/8cc8e0d9-7d9b-4162-aebd-e459e996a144" alt="진정민 프로필" />
+        <img src="https://github.com/jongsujin.png" alt="진종수 프로필" />
       </a>
     </td>
      <td align="center" width="150px">
@@ -83,8 +82,8 @@ fascinating-valkyrie-a7121b.netlify.app
       </a>
     </td>
     <td align="center">
-      <a href="https://github.com/JeongMin83" target="_blank">
-        진정민<br />
+      <a href="https://github.com/jongsujin" target="_blank">
+        진종수<br />
                 팀원 (FE)
       </a>
     </td>
@@ -98,11 +97,12 @@ fascinating-valkyrie-a7121b.netlify.app
 </table>
 
 ## 📌 Contributor
+
 > @[JeongMin83](https://github.com/JeongMin83) (진정민) : 채팅방<br/>
-@[jiohjung98](https://github.com/jiohjung98) (정지오) : 채팅 생성<br/>
-@[xxxjinn](https://github.com/xxxjinn) (신현진) : 유저 목록 페이지, 유저 프로필 모달, css 수정<br/>
-@[JeongMin83](https://github.com/JeongMin83) (진정민) : 메인페이지, 로그인, 모집<br/>
-@[NohWookJin](https://github.com/NohWookJin) (노욱진) : 회원가입, 로그인, 마이페이지<br/>
+> @[jiohjung98](https://github.com/jiohjung98) (정지오) : 채팅 생성<br/>
+> @[xxxjinn](https://github.com/xxxjinn) (신현진) : 유저 목록 페이지, 유저 프로필 모달, css 수정<br/>
+> @[jongsujin](https://github.com/jongsujin) (진종수) : 내 채팅, 오픈 채팅 조회<br/>
+> @[NohWookJin](https://github.com/NohWookJin) (노욱진) : 회원가입, 로그인, 마이페이지<br/>
 
 ## 📌 기술 스택
 
@@ -125,7 +125,6 @@ fascinating-valkyrie-a7121b.netlify.app
   <img src="https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white" />
 </div>
 
-
 ### Deploy
 
 <div style="display: flex;">
@@ -142,12 +141,9 @@ fascinating-valkyrie-a7121b.netlify.app
 
 ## 📌 주요 화면 및 기능
 
-
 ## 📌 DB 스키마
 
-
 ## 📌 유저 플로우
-
 
 ## 📌 파일 구조
 
@@ -159,28 +155,28 @@ fascinating-valkyrie-a7121b.netlify.app
 |   |    |   .
 |   |    |   .
 │   │    └── Header/
-│   │    
-│   ├── components/    
+│   │
+│   ├── components/
 │   │    ├── ChannelModal/
 │   │    ├── SidebarGallery/
 |   |    |   .
 |   |    |   .
 |   |    |   .
 │   │    └── Slider/
-│   │    
+│   │
 │   ├── fonts/                  # 추후 assets로
-│   ├── pages/     
+│   ├── pages/
 │   │    ├── Gallery/
 │   │    ├── Home/
 |   |    |   .
 |   |    |   .
 |   |    |   .
-│   │    └── Wiki/     
-│   │    
-│   ├── utils/           
+│   │    └── Wiki/
+│   │
+│   ├── utils/
 │   │    ├── firebase.ts
 │   │    └── recoil.ts
-│   │    
+│   │
 │   ├── App.tsx
 │   ├── index.tsx
 │   ├── GlobalStyle.tsx
@@ -189,7 +185,7 @@ fascinating-valkyrie-a7121b.netlify.app
 │
 ├── public/
 │   └── index.html
-│  
+│
 ├── node_modules/
 ├── package.json
 ├── tsconfig.json
@@ -198,4 +194,4 @@ fascinating-valkyrie-a7121b.netlify.app
 └── ...
 ```
 
-### 📌 개발 기간 :  `2주` `23.11.06 ~ 23.11.16`
+### 📌 개발 기간 : `2주` `23.11.06 ~ 23.11.16`

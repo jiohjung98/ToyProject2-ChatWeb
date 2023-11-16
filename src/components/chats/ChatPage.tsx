@@ -90,7 +90,7 @@ const MyChats = ({ userType }: { userType: string }) => {
             console.log('Socket connected');
           });
 
-          await socket.emit('message-to-server', `notice09:${userName}님이 채팅방에 입장하였습니다. `);
+          socket.emit('message-to-server', `notice09:${userName}님이 채팅방에 입장하였습니다. `);
 
           socket.on('disconnect', () => {
             console.log('disconnect');

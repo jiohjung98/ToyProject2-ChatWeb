@@ -1,11 +1,9 @@
 ## 📌 프로젝트 소개
 
 ## 📌 배포 사이트
+[![Deploy Chat Badge](https://img.shields.io/badge/Deploy-Chat-%2300956e?logo=Netlify&logoColor=%239a9a9a&labelColor=black&color=%2300956e)](https://fascinating-valkyrie-a7121b.netlify.app)
 
-<div>
-  <img src="https://img.shields.io/badge/Deploy-Chat-%2300956e?logo=Netlify&logoColor=%239a9a9a&labelColor=black&color=%2300956e&link=fascinating-valkyrie-a7121b.netlify.app" />
-</div>
-fascinating-valkyrie-a7121b.netlify.app
+<br />
 
 <details>
 <summary>야놀자 테크 캠프 토이 프로젝트 2 설명</summary>

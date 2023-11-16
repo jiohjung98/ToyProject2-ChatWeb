@@ -36,7 +36,7 @@ const UserProfileModal = ({ clickModal, user }: UserProfileModalProps) => {
         .map((user) => `[name:${user.username}, id:${user.id}, picture:${user.picture}]`)
         .join(',');
       const latestMessageQuery = JSON.stringify(chat.latestMessage);
-      router.push(`/chating/${chat.id}`);
+      router.push(`/chatting/${chat.id}`);
     }
   };
   const handleChatClick = async () => {
@@ -48,11 +48,8 @@ const UserProfileModal = ({ clickModal, user }: UserProfileModalProps) => {
         const existingChat = chats ? chats.find((chat) => chat.name === chatName) : null;
         if (existingChat) {
           console.log('이미 채팅방이 존재해요. 그 채팅방으로 이동하겠습니다.');
-          console.log(existingChat);
-          console.log(userId);
           enterChatRoom(existingChat);
         } else {
-          alert('채팅방 없음');
           console.log('채팅방이 없음');
           const response = await fetch('https://fastcampus-chat.net/chat', {
             method: 'POST',
@@ -70,10 +67,9 @@ const UserProfileModal = ({ clickModal, user }: UserProfileModalProps) => {
           console.log(user.id, userId);
           if (response.ok) {
             // 생성된 채팅 방으로 이동
-            alert(user.id);
             const data = await response.json();
             const generatedChatId = `1on1_${user.id}_${userId}`;
-            router.push(`/chating/${data.id}`);
+            router.push(`/chatting/${data.id}`);
           } else {
             console.error('Failed to create chat room');
           }
@@ -85,7 +81,7 @@ const UserProfileModal = ({ clickModal, user }: UserProfileModalProps) => {
       console.error(error);
     }
   };
-  
+
   return (
     <UserModalBox onClick={clickModal}>
       <ModalContent onClick={(e) => e.stopPropagation()}>
@@ -105,10 +101,10 @@ const UserProfileModal = ({ clickModal, user }: UserProfileModalProps) => {
               )}
             </UserState>
           </UserInfo>
-          <ToChating onClick={handleChatClick}>
+          <ToChatting onClick={handleChatClick}>
             <ImBubble size="30" className="chatIcon" />
             <ChatText>1:1 채팅하기</ChatText>
-          </ToChating>
+          </ToChatting>
         </ModalMain>
       </ModalContent>
     </UserModalBox>
@@ -170,7 +166,7 @@ const UserName = styled.h1`
   font-size: ${({ theme }) => theme.fontSize.title};
   margin: 0;
 `;
-const ToChating = styled.div`
+const ToChatting = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;

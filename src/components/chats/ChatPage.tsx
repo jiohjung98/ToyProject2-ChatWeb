@@ -41,7 +41,7 @@ const MyChats = ({ userType }: { userType: string }) => {
         setChatModalOpen(true);
         console.log('새로 입장 성공');
       } else {
-        router.push(`/chating/${chat.id}`);
+        router.push(`/chatting/${chat.id}`);
         console.log('기존 유저 들어가기 성공');
       }
     }

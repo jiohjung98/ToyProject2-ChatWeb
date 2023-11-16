@@ -6,9 +6,7 @@ import styled from 'styled-components'
 import { MdClose, MdSearch } from 'react-icons/md';
 import { useRouter } from 'next/navigation';
 import { Chat } from '@/components/chats/chatsStore';
-
 import { getCookie } from '@/lib/cookie';
-
 interface User {
     id: string;
     password: string;
@@ -16,41 +14,34 @@ interface User {
     picture: string;
     chats: string[];
 }
-
 interface ResponseBody {
     chats: [{ id: string; name: string }];
 }
-
 function UserSelect() {
     const [users, setUsers] = useState<User[] | []>([]);
     const [loading, setLoading] = useState(true);
     const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
-
   const router = useRouter();
   const [newChatId, setNewChatId] = useState<string | null>(null);
   const accessToken = getCookie('accessToken');
 //   const accessToken = sessionStorage.getItem('accessToken');
   const userId = typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
 //   const userId = getCookie('userId');
-
     const [isPrivate, setIsPrivate] = useState(true); 
     const [showModal, setShowModal] = useState(false);
     const [chatName, setChatName] = useState('');
     const [myChats, setMyChats] = useState<Chat[]>([]);
-
     const enterChatRoom = (chat: Chat) => {
         if (chat.id && chat.users) {
             const users = chat.users
                 .map((user) => `[name:${user.username}, id:${user.id}, picture:${user.picture}]`)
                 .join(',');
             const latestMessageQuery = JSON.stringify(chat.latestMessage);
-
             router.push(
-                `/chating/${chat.id}`,
+                `/chatting/${chat.id}`,
             );
         }
     };
-
     // const getMyChats = async () => {
     //     try {
     //         const res = await instance.get<Chat[], any>(`chat`);
@@ -69,7 +60,6 @@ function UserSelect() {
     //     getMyChats()
     //  }, []);
        
-
     const handleChatClick = async () => {
         if (selectedUsers.length === 1) {
             const selectedUser = selectedUsers[0];
@@ -79,7 +69,6 @@ function UserSelect() {
                   const { chats } = res;
                   const chatName = `1:1 Chat with ${selectedUser.name}`;
                   const existingChat = chats ? chats.find((chat) => chat.name === chatName) : null;
-
                     if (existingChat) {
                         // 이미 존재하는 채팅방으로 이동
                         enterChatRoom(existingChat);
@@ -121,18 +110,15 @@ function UserSelect() {
         setChatName(''); 
         setIsPrivate(true); 
     };
-
     // 그룹 채팅방
     const handleGroupChatCreate = () => {
         if (!chatName) {
             console.log('채팅방 이름이 입력되지 않았습니다');
             return;
         }
-
         createChatRoom(chatName, isPrivate);
         setShowModal(false);
     };
-
     const createChatRoom = async (name: string, isPrivate: boolean) => {
         try {
           const selectedUserIds = selectedUsers.map((user) => user.id);
@@ -158,7 +144,7 @@ function UserSelect() {
             const data = await response.json();
             const generatedChatId = `group_${data.id}`;
             setNewChatId(generatedChatId);
-            router.push(`/chating/${data.id}`);
+            router.push(`/chatting/${data.id}`);
           } else {
             console.error('채팅방 생성 실패');
             console.log(userId)
@@ -167,8 +153,6 @@ function UserSelect() {
           console.error('채팅방 생성 중 오류 발생:', error);
         }
       };
-
-
     const handleUserSelect = (user: User) => {
         if (selectedUsers.some(selectedUser => selectedUser.id === user.id)) {
             setSelectedUsers(prevSelectedUsers => prevSelectedUsers.filter(selectedUser => selectedUser.id !== user.id));
@@ -177,7 +161,6 @@ function UserSelect() {
         }
     };
  
-
     const getUsers = async () => {
         try {
             let res = await instance.get<unknown, User[]>('/users');
@@ -188,22 +171,18 @@ function UserSelect() {
             console.log(error);
         }
     };
-
     useEffect(() => {
         getUsers();
     }, []);
-
     /**사용자 검색 */
     const [userInput, setUserInput] = useState('');
     const getInputValue = (e: ChangeEvent<HTMLInputElement>) => {
         setUserInput(e.target.value);
     };
     const searched = users.filter((user) => user.name.includes(userInput));
-
     const clearSearchInput = () => {
         setUserInput('');
     };
-
     return (
         <>
             <UsersWrap>
@@ -272,94 +251,64 @@ function UserSelect() {
         </>
     );
 }
-
 export default UserSelect;
-
 const UsersWrap = styled.div`
     padding: 3rem;
-
     display: flex;
     flex-direction: column;
-
     height: 100vh;
 `;
-
 const HeaderText = styled.h1`
     color: #00956e;
-
     margin-top: 0;
-
     padding: 1rem;
 `;
-
 const UserList = styled.div`
     margin-top: 2rem;
-
     padding: 1rem;
-
     height: 80%;
-
     overflow-y: auto;
 `;
-
 const NoUserWrap = styled.div`
     text-align: center;
-
     margin-top: 8rem;
-
     display: flex;
     flex-direction: column;
     gap: 3rem;
 `;
-
 const NoUserText = styled.h2`
     color: #05664c;
 `;
-
 /**사용자 검색 */
 const SearchUserBox = styled.div`
     background-color: white;
-
     border-radius: 20px;
     box-shadow: 0px 2px 30px 0px rgba(0, 0, 0, 0.15);
-
     width: 100%;
     height: 3.5rem;
-
     display: flex;
     gap: 3%;
 `;
-
 const SearchButton = styled.div`
     background-color: #00956e;
     width: 5rem;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     border-top-left-radius: 15px;
     border-bottom-left-radius: 15px;
 `;
-
 const SearchUserInput = styled.input`
     border: none;
-
     width: 32rem;
-
     outline: none;
-
     font-size: 1.2rem;
 `;
-
 const ClearButton = styled.div`
     margin-right: 2.5rem;
-
     display: flex;
     align-items: center;
-
     cursor: pointer;
-
     .clearIcon {
         color: #00956e;
         &:hover {
@@ -368,19 +317,14 @@ const ClearButton = styled.div`
         }
     }
 `;
-
 const Loading = styled.div`
     width: 50px;
     height: 50px;
-
     border: 5.5px solid rgba(255, 255, 255, 0.3);
     border-top: 5.5px solid #00956e;
     border-radius: 50%;
-
     animation: spin 1s linear infinite;
-
     margin: 8rem auto 0;
-
     @keyframes spin {
         0% {
             transform: rotate(0deg);
@@ -398,7 +342,6 @@ const ChatButtonWrapper = styled.div`
     justify-content: center;
     align-items: center;
 `;
-
 const ChatButton = styled.button`
     background-color: #00956e;
     color: white;
@@ -408,7 +351,6 @@ const ChatButton = styled.button`
     cursor: pointer;
     margin-top: 1rem;
 `;
-
 const Modal = styled.div`
   position: fixed;
   top: 0;
@@ -420,7 +362,6 @@ const Modal = styled.div`
   align-items: center;
   justify-content: center;
 `;
-
 const ModalContent = styled.div`
   background: white;
   padding: 20px;
@@ -428,12 +369,10 @@ const ModalContent = styled.div`
   width: 400px;
   height: 280px;
   text-align: left; 
-
   h2 {
     margin-bottom: 20px;
     color: #00956e;
   }
-
   .checkbox-wrapper {
     display: flex;
     align-items: center;
@@ -441,17 +380,14 @@ const ModalContent = styled.div`
     margin-bottom: 10px;
     width: 20px;
     height: 20px;
-
     label {
       margin-right: 5px; 
       white-space: nowrap;
     }
-
     input {
       margin-right: 5px;
     }
   }
-
   #chatName-wrapper {
     margin-top: 1rem;
     width: calc(100% - 16px);
@@ -459,20 +395,17 @@ const ModalContent = styled.div`
     border: 1px solid #ccc;
     border-radius: 8px;
   }
-
   .group-chat-text {
     margin-top: 10px;
     font-size: 0.9rem;
     color: #777;
   }
-
   .button-wrapper {
     display: flex;
     justify-content: flex-end;
     margin-top: 3rem;
   }
 `;
-
 const ModalButton = styled.button`
   background-color: #00956e;
   color: white;

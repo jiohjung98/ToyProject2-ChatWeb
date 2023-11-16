@@ -5,22 +5,22 @@ import Back from '../../../public/assets/back.svg';
 import Menu from '../../../public/assets/menu.svg';
 import { useRouter } from 'next/navigation';
 import { useRecoilState } from 'recoil';
-import { ChatingModalToggle } from '@/store/atoms';
+import { ChattingModalToggle } from '@/store/atoms';
 
-interface ChatingNaviagtionProps {
+interface ChattingNaviagtionProps {
   chatName: string;
   usersLength: number;
 }
 
 //props type
-export default function ChatingNavigation(props: ChatingNaviagtionProps) {
-  const [modalToggle, setModalToggle] = useRecoilState<boolean>(ChatingModalToggle);
+export default function ChatingNavigation(props: ChattingNaviagtionProps) {
+  const [modalToggle, setModalToggle] = useRecoilState<boolean>(ChattingModalToggle);
 
   const router = useRouter();
 
   return (
     <NavigationWrapper>
-      <BackIcon onClick={() => router.back()} />
+      <BackIcon onClick={() => router.push('/')} />
       <ChatTitle>
         {props.chatName}
         <ChatUsersLength>{props.usersLength}</ChatUsersLength>

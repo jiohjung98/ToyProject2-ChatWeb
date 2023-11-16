@@ -214,8 +214,7 @@ export default function ChattingPage() {
                         ''
                       )}
                     </>
-                  ) : messages[i].userId == messages[i + 1]?.userId ||
-                    messages[i].userId == messages[i + 1]?.userId ||
+                  ) : messages[i].userId == messages[i + 1]?.userId &&
                     messages[i + 1]?.text.split(':')[0] != 'notice09' ? (
                     <>
                       <YourMessageWrapper key={message.id}>

@@ -10,11 +10,6 @@ import { ConnectUserIdList } from './UserListStore';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { Chat } from '@/components/chats/chatsStore';
 import { instance } from '@/lib/api';
-<<<<<<< HEAD
-import { headers } from '../chats/getChats';
-
-=======
->>>>>>> T29-12--checkchats
 // types 폴더 나중에 만들어서 type 빼놓기
 interface User {
   id: string;
@@ -55,9 +50,9 @@ const UserProfileModal = ({ clickModal, user }: UserProfileModalProps) => {
       if (res) {
         const { chats } = res;
 
-         // 로그인 사용자와 선택된 사용자의 ID를 정렬하여 채팅방 이름 생성
-         const sortedUserIds = [userId, user.id].sort();
-         const chatName = `1:1 Chat ${sortedUserIds.join('_')}`;
+        // 로그인 사용자와 선택된 사용자의 ID를 정렬하여 채팅방 이름 생성
+        const sortedUserIds = [userId, user.id].sort();
+        const chatName = `1:1 Chat ${sortedUserIds.join('_')}`;
         const existingChat = chats ? chats.find((chat) => chat.name === chatName) : null;
         if (existingChat) {
           console.log('이미 채팅방이 존재해요. 그 채팅방으로 이동하겠습니다.');

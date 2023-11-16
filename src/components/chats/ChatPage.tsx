@@ -82,12 +82,6 @@ const MyChats = ({ userType }: { userType: string }) => {
       </ChatHeader>
       <SearchMyChat userType={userType} />
       <ChatList>
-        <EnterChatRoomModal
-          isOpen={chatModalOpen}
-          onEnterClick={onEnterHandler}
-          onCancelClick={onModalHandler}
-          selectedChat={selectedChat}
-        />
         {isLoading && <Loading />}
         {userId && data ? (
           filterInputValue ? (
@@ -104,7 +98,7 @@ const MyChats = ({ userType }: { userType: string }) => {
               ))
             ) : (
               <NoUserWrap>
-                <NoUserText>해당 사용자가 존재하지 않습니다.</NoUserText>
+                <NoUserText>해당 채팅방이 존재하지 않습니다.</NoUserText>
               </NoUserWrap>
             )
           ) : (
@@ -121,6 +115,12 @@ const MyChats = ({ userType }: { userType: string }) => {
           )
         ) : null}
       </ChatList>
+      <EnterChatRoomModal
+        isOpen={chatModalOpen}
+        onEnterClick={onEnterHandler}
+        onCancelClick={onModalHandler}
+        selectedChat={selectedChat}
+      />
     </Wrapper>
   );
 };

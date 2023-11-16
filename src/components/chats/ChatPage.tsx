@@ -51,6 +51,19 @@ const MyChats = ({ userType }: { userType: string }) => {
         setChatModalOpen(true);
         console.log('새로 입장 성공');
 
+      
+      } else {
+        router.push(`/chatting/${chat.id}`);
+        console.log('기존 유저 들어가기 성공');
+      }
+    }
+  };
+
+  // 입장하기 버튼 눌렀을 때 채팅에 참여시키는 함수
+  const onEnterHandler = async () => {
+    if (selectedChat && selectedChat.id) {
+      partChats(selectedChat.id);
+      setChatModalOpen(false);
         // 채팅방 입장 공지
         const accessToken = getCookie('accessToken');
 
@@ -77,7 +90,7 @@ const MyChats = ({ userType }: { userType: string }) => {
             console.log('Socket connected');
           });
 
-          socket.emit('message-to-server', `notice09:${userName}님이 채팅방에 입장하였습니다. `);
+          await socket.emit('message-to-server', `notice09:${userName}님이 채팅방에 입장하였습니다. `);
 
           socket.on('disconnect', () => {
             console.log('disconnect');
@@ -89,18 +102,6 @@ const MyChats = ({ userType }: { userType: string }) => {
         } catch (error) {
           console.log(error);
         }
-      } else {
-        router.push(`/chatting/${chat.id}`);
-        console.log('기존 유저 들어가기 성공');
-      }
-    }
-  };
-
-  // 입장하기 버튼 눌렀을 때 채팅에 참여시키는 함수
-  const onEnterHandler = () => {
-    if (selectedChat && selectedChat.id) {
-      partChats(selectedChat.id);
-      setChatModalOpen(false);
       router.push(`/chatting/${selectedChat.id}`);
       console.log('새로 입장 성공');
     } else {

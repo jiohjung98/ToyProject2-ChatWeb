@@ -73,7 +73,7 @@ export const refreshCookie = async () => {
       setCookie('accessToken', accessToken, {
         path: '/',
         secure: '/',
-        maxAge: 7 * 24 * 60 * 60 * 1000,
+        maxAge: 2 * 60 * 60 * 1000,
       });
       setCookie('refreshToken', refreshToken, {
         path: '/',

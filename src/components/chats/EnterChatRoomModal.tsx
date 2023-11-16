@@ -35,7 +35,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: center;
 
-  background: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.4);
 `;
 
 const ModalContainer = styled.div`

@@ -10,6 +10,7 @@ import { ConnectUserIdList } from './UserListStore';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { Chat } from '@/components/chats/chatsStore';
 import { instance } from '@/lib/api';
+import { headers } from '../chats/getChats';
 
 // types 폴더 나중에 만들어서 type 빼놓기
 interface User {

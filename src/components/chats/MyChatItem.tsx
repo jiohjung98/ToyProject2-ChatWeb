@@ -32,11 +32,13 @@ const MyChatItem = ({ name, latestMessage, users, onClick, isPrivate }: Chat) =>
             {chatsName} <span>{usersNumber}</span>
           </ChatName>
         </ChatPart>
-        <LateMessage>{latestMessage
-  ? latestMessage.text.split(':')[0] == 'notice09'
-    ? latestMessage.text.split(':')[1]
-    : eclipsText(latestMessage.text, 20)
-  : ''}{' '} </LateMessage>
+        <LateMessage>
+          {latestMessage
+            ? latestMessage.text.split(':')[0] == 'notice09'
+              ? latestMessage.text.split(':')[1]
+              : eclipsText(latestMessage.text, 20)
+            : ''}{' '}
+        </LateMessage>
       </ChatInfo>
       <MessageCount>
         <ReceiveTime>{latestMessage ? formatCreatedAt(latestMessage.createdAt) : ''}</ReceiveTime>
@@ -49,7 +51,7 @@ export default MyChatItem;
 const ChatBox = styled.div`
   margin-bottom: 2rem;
   cursor: pointer;
-  background: #FFFFFF;
+  background: #ffffff;
   box-shadow: ${({ theme }) => theme.shadow.list};
   border-radius: 20px;
   &:hover {
@@ -104,7 +106,7 @@ const MessageCount = styled.div`
 const ReceiveTime = styled.p`
   margin: 0;
   font-size: ${({ theme }) => theme.fontSize.sm};
-  color: #CDCDCD;
+  color: #cdcdcd;
 `;
 const TypeCheckBox = styled.div`
   text-align: center;

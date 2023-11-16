@@ -6,23 +6,32 @@ import { formatCreatedAt } from '@/components/chats/useFormatCreatedAt';
 import { FaLock } from 'react-icons/fa6';
 import { eclipsText } from './ModalTextData';
 const MyChatItem = ({ name, latestMessage, users, onClick, isPrivate }: Chat) => {
+  const userId = typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
+  // 1대1 채팅일 때 상대방 이름과 이미지 가져오는 함수
+  const getPictureName = () => {
+    if (users) {
+      const otherUser = users.find((user) => user.id !== userId);
+      return otherUser;
+    }
+  };
+
+  const otherUser = getPictureName();
+  const otherUserName = otherUser ? otherUser.username : '';
+  const otherPicture = otherUser ? otherUser.picture : '';
+
   const chatsPicture =
     isPrivate && users && users.length > 2 // private 한 그룹 채팅인 경우
       ? '/assets/groupPrivate.svg'
       : isPrivate && users && users.length === 2 // private이면서 1대1 채팅인 경우
-      ? users[0].picture
+      ? otherPicture
       : !isPrivate && users && users.length > 2 // private 아니면서 그룹채팅인 경우
       ? '/assets/groupUsers.svg'
       : !isPrivate && users && users.length === 2
-      ? users[0].picture // private 하지 않으면서 1대1 인 경우
+      ? otherPicture // private 하지 않으면서 1대1 인 경우
       : '/assets/noUser.svg';
   const usersNumber = users && users.length > 0 ? users.length : '';
   const chatsName =
-    users && users.length === 1
-      ? '상대방이 채팅방을 나갔습니다.'
-      : users && users.length === 2
-      ? users[0].username
-      : name;
+    users && users.length === 1 ? '상대방이 채팅방을 나갔습니다.' : users && users.length === 2 ? otherUserName : name;
   return (
     <ChatBox onClick={onClick}>
       <ChatImage src={chatsPicture} alt="chats picutre" />
@@ -32,11 +41,13 @@ const MyChatItem = ({ name, latestMessage, users, onClick, isPrivate }: Chat) =>
             {chatsName} <span>{usersNumber}</span>
           </ChatName>
         </ChatPart>
-        <LateMessage>{latestMessage
-  ? latestMessage.text.split(':')[0] == 'notice09'
-    ? latestMessage.text.split(':')[1]
-    : eclipsText(latestMessage.text, 20)
-  : ''}{' '} </LateMessage>
+        <LateMessage>
+          {latestMessage
+            ? latestMessage.text.split(':')[0] == 'notice09'
+              ? latestMessage.text.split(':')[1]
+              : eclipsText(latestMessage.text, 20)
+            : ''}{' '}
+        </LateMessage>
       </ChatInfo>
       <MessageCount>
         <ReceiveTime>{latestMessage ? formatCreatedAt(latestMessage.createdAt) : ''}</ReceiveTime>
@@ -49,7 +60,7 @@ export default MyChatItem;
 const ChatBox = styled.div`
   margin-bottom: 2rem;
   cursor: pointer;
-  background: #FFFFFF;
+  background: #ffffff;
   box-shadow: ${({ theme }) => theme.shadow.list};
   border-radius: 20px;
   &:hover {
@@ -104,7 +115,7 @@ const MessageCount = styled.div`
 const ReceiveTime = styled.p`
   margin: 0;
   font-size: ${({ theme }) => theme.fontSize.sm};
-  color: #CDCDCD;
+  color: #cdcdcd;
 `;
 const TypeCheckBox = styled.div`
   text-align: center;

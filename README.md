@@ -67,7 +67,7 @@ fascinating-valkyrie-a7121b.netlify.app
         <td align="center">
       <a href="https://github.com/JeongMin83" target="_blank">
         진정민<br />
-                팀원 (FE)
+                팀장 (FE)
       </a>
     </td>
         <td align="center">
@@ -98,7 +98,7 @@ fascinating-valkyrie-a7121b.netlify.app
 </table>
 
 ## 📌 Contributor
-> @[JeongMin83](https://github.com/JeongMin83) (진정민) : 메인페이지, 로그인, 모집<br/>
+> @[JeongMin83](https://github.com/JeongMin83) (진정민) : 채팅방<br/>
 @[jiohjung98](https://github.com/jiohjung98) (정지오) : 채팅 생성<br/>
 @[xxxjinn](https://github.com/xxxjinn) (신현진) : 유저 목록 페이지, 유저 프로필 모달, css 수정<br/>
 @[JeongMin83](https://github.com/JeongMin83) (진정민) : 메인페이지, 로그인, 모집<br/>

@@ -96,12 +96,12 @@ const MyChats = ({ userType }: { userType: string }) => {
 
         return () => {
           socket.disconnect();
+          router.push(`/chatting/${selectedChat.id}`);
+          console.log('새로 입장 성공');
         };
       } catch (error) {
         console.log(error);
       }
-      router.push(`/chatting/${selectedChat.id}`);
-      console.log('새로 입장 성공');
     } else {
       alert('입장 실패');
     }

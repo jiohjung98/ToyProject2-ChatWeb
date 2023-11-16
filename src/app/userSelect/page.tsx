@@ -60,45 +60,53 @@ function UserSelect() {
 
   const handleChatClick = async () => {
     if (selectedUsers.length === 1) {
-      const selectedUser = selectedUsers[0];
-      try {
-        const res = await instance.get<unknown, ResponseBody>(`chat`);
-        if (res) {
-          const { chats } = res;
-          const chatName = `1:1 Chat with ${selectedUser.name}`;
-          const existingChat = chats ? chats.find((chat) => chat.name === chatName) : null;
-          if (existingChat) {
-            // 이미 존재하는 채팅방으로 이동
-            enterChatRoom(existingChat);
-            console.log('이미 채팅방이 존재해요. 그 채팅방으로 이동하겠습니다.');
-            console.log(existingChat);
-            console.log(userId);
-            console.log(selectedUser.id);
-            console.log(selectedUser.name);
-          } else {
-            // 채팅방이 없으면 채팅방 생성 후 이동
-            console.log('채팅방이 없습니다. 새로운 채팅방을 생성하겠습니다.');
-            const isPrivate = true;
-            console.log(selectedUser);
-            console.log(selectedUser.id);
-            console.log(selectedUser.name);
+        const selectedUser = selectedUsers[0];
 
-            console.log(myChats);
-            console.log(existingChat);
-            createChatRoom(chatName, isPrivate);
-            console.log(userId);
-          }
-        } else {
-          console.error('선택된 사용자의 ID가 없습니다.');
-          console.log(userId);
+        try {
+            const res = await instance.get<unknown, ResponseBody>(`chat`);
+            if (res) {
+                const { chats } = res;
+                const selectedUserId = selectedUser.id;
+
+                // 로그인 사용자와 선택된 사용자의 ID를 정렬하여 채팅방 이름 생성
+                const sortedUserIds = [userId, selectedUserId].sort();
+                const chatName = `1:1 Chat ${sortedUserIds.join('_')}`;
+
+                const existingChat = chats ? chats.find((chat) => chat.name === chatName) : null;
+
+                if (existingChat) {
+                    // 이미 존재하는 채팅방으로 이동
+                    enterChatRoom(existingChat);
+                    console.log('이미 채팅방이 존재해요. 그 채팅방으로 이동하겠습니다.');
+                    console.log(existingChat);
+                    console.log(userId);
+                    console.log(selectedUser.id);
+                    console.log(selectedUser.name);
+                } else {
+                    // 채팅방이 없으면 채팅방 생성 후 이동
+                    console.log('채팅방이 없습니다. 새로운 채팅방을 생성하겠습니다.');
+                    const isPrivate = true;
+                    console.log(selectedUser);
+                    console.log(selectedUser.id);
+                    console.log(selectedUser.name);
+
+                    console.log(myChats);
+                    console.log(existingChat);
+                    createChatRoom(chatName, isPrivate);
+                    console.log(userId);
+                }
+            } else {
+                console.error('선택된 사용자의 ID가 없습니다.');
+                console.log(userId);
+            }
+        } catch (error) {
+            console.error(error);
         }
-      } catch (error) {
-        console.error(error);
-      }
     } else {
-      setShowModal(true);
+        setShowModal(true);
     }
-  };
+};
+
 
   // 모달 닫기
   const handleCloseModal = () => {

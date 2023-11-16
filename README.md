@@ -163,50 +163,65 @@ fascinating-valkyrie-a7121b.netlify.app
 ## 📌 파일 구조
 
 ```
-2weeks-team/
+CHAT/
 ├── src/
-│   ├── common/
-│   │    ├── Footer/
-|   |    |   .
-|   |    |   .
-│   │    └── Header/
-│   │
+│   ├── api/
+│   │    └── socketIo.ts
+│   │    
+│   ├── app/
+│   │    ├── head.tsx
+│   │    ├── layout.tsx
+│   │    ├── page.tsx 
+│   │    ├── allchats/
+│   │    ├── chatting/
+|   |    ├── createAccount/
+|   |    ├── login/
+|   |    ├── mychats/
+|   |    ├── mypage/
+│   │    └── userSelect/
+│   │    
 │   ├── components/
-│   │    ├── ChannelModal/
-│   │    ├── SidebarGallery/
-|   |    |   .
-|   |    |   .
-|   |    |   .
-│   │    └── Slider/
+│   │    ├── Move.tsx
+│   │    ├── Navigation.tsx
+│   │    ├── Chat/
+│   │    ├── chats/
+│   │    ├── chatting/ 
+│   │    ├── Login/
+│   │    ├── Mypage/
+|   |    ├── Register/
+|   |    ├── Users/
+|   |    ├── mychats/
+|   |    ├── mypage/
+│   │    └── userSelect/
+│   │                
+│   ├── hooks/
+│   │    └── AuthCheck.ts
+│   │    └── createAccount/     
+│   │    
+│   ├── lib/           
+│   │    ├── api.ts
+│   │    ├── cookie.ts
+│   │    └── registry.tsx
+│   ├── store/        
+│   │    └── atoms.ts
 │   │
-│   ├── fonts/                  # 추후 assets로
-│   ├── pages/
-│   │    ├── Gallery/
-│   │    ├── Home/
-|   |    |   .
-|   |    |   .
-|   |    |   .
-│   │    └── Wiki/
-│   │
-│   ├── utils/
-│   │    ├── firebase.ts
-│   │    └── recoil.ts
-│   │
-│   ├── App.tsx
-│   ├── index.tsx
-│   ├── GlobalStyle.tsx
-│   ├── fonts.d.ts
-│   └── custom.d.ts
+│   ├── style/        
+│   │    └── theme.ts
 │
 ├── public/
-│   └── index.html
-│
+│   ├── assets/
+│   ├── fonts/
+│   └── Logo.png
+│  
 ├── node_modules/
+├── .babelrc
+├── .gitignore
+├── next-env.d.ts
+├── next.config.js
 ├── package.json
 ├── tsconfig.json
-├── .eslintrc
 ├── README.md
 └── ...
 ```
 
-### 📌 개발 기간 : `2주` `23.11.06 ~ 23.11.16`
+### 📌 개발 기간 :  `2주` `23.11.06 ~ 23.11.16`

@@ -86,7 +86,7 @@ const LoginForm = () => {
             <button className="submitFullButton">로그인</button>
           )}
         </div>
-        <StyledLink href="/createAccount" className="anchor">
+        <StyledLink href="/createaccount" className="anchor">
           <span> 아이디가 없으신가요? 회원가입하기</span>
         </StyledLink>
       </StyledForm>

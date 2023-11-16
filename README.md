@@ -157,6 +157,7 @@ fascinating-valkyrie-a7121b.netlify.app
 ## 📌 DB 스키마
 
 ## 📌 유저 플로우
+<img width="768" alt="유저플로우" src="https://github.com/TOY-2-9/chat/assets/101846817/c5eff956-146e-401b-b688-2713134dcc45">
 
 ## 📌 파일 구조
 

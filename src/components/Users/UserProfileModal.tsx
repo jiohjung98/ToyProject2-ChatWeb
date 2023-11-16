@@ -49,13 +49,16 @@ const UserProfileModal = ({ clickModal, user }: UserProfileModalProps) => {
       const res = await instance.get<unknown, ResponseBody>(`chat`);
       if (res) {
         const { chats } = res;
-        const chatName = `1:1 Chat with ${user.name}`;
+
+         // 로그인 사용자와 선택된 사용자의 ID를 정렬하여 채팅방 이름 생성
+         const sortedUserIds = [userId, user.id].sort();
+         const chatName = `1:1 Chat ${sortedUserIds.join('_')}`;
         const existingChat = chats ? chats.find((chat) => chat.name === chatName) : null;
         if (existingChat) {
           console.log('이미 채팅방이 존재해요. 그 채팅방으로 이동하겠습니다.');
           enterChatRoom(existingChat);
         } else {
-          console.log('채팅방이 없음');
+          console.log('채팅방이 없어요. 새로 채팅방을 만들겠습니다.');
           const response = await fetch('https://fastcampus-chat.net/chat', {
             method: 'POST',
             headers: {

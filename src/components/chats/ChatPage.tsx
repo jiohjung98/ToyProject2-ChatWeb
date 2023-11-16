@@ -90,7 +90,7 @@ const MyChats = ({ userType }: { userType: string }) => {
             socket.disconnect();
             router.push(`/chatting/${selectedChat.id}`);
             console.log('새로 입장 성공');
-          }, 3000);
+          }, 2000);
         });
 
         socket.emit('message-to-server', `notice09:${userName}님이 채팅방에 입장하였습니다. `);

@@ -104,7 +104,7 @@ const MyChats = ({ userType }: { userType: string }) => {
               ))
             ) : (
               <NoUserWrap>
-                <NoUserText>해당 사용자가 존재하지 않습니다.</NoUserText>
+                <NoUserText>해당 채팅방이 존재하지 않습니다.</NoUserText>
               </NoUserWrap>
             )
           ) : (

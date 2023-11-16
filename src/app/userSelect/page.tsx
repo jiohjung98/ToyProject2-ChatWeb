@@ -208,6 +208,11 @@ function UserSelect() {
         <>
             <UsersWrap>
                 <HeaderText>사용자 선택</HeaderText>
+                {selectedUsers.length > 0 && (
+                <ChatButtonWrapper>
+                    <ChatButton onClick={handleChatClick}>채팅하기</ChatButton>
+                </ChatButtonWrapper>
+                )}
                 <SearchUserBox>
                     <SearchButton>
                         <MdSearch className="searchIcon" size="35" color="white" />
@@ -234,11 +239,6 @@ function UserSelect() {
                               </NoUserWrap>
                           )}
                 </UserList>
-                {selectedUsers.length > 0 && (
-                <ChatButtonWrapper>
-                    <ChatButton onClick={handleChatClick}>채팅하기</ChatButton>
-                </ChatButtonWrapper>
-                )}
             {showModal && (
                 <Modal>
                     <ModalContent>
@@ -391,6 +391,9 @@ const Loading = styled.div`
     }
 `;
 const ChatButtonWrapper = styled.div`
+    position: absolute;
+    top: 4rem;
+    right: 3rem; 
     display: flex;
     justify-content: center;
     align-items: center;

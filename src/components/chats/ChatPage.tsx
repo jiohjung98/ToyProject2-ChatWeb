@@ -20,7 +20,6 @@ import io from 'socket.io-client';
 import { getCookie } from '@/lib/cookie';
 
 const MyChats = ({ userType }: { userType: string }) => {
-  const [addChatOpen, setAddChatOpen] = useState(false);
   const [chatModalOpen, setChatModalOpen] = useState(false);
   // 검색창에 입력 중에 올바른 검색어 비교 위해 Input 값 전역 상태 관리
   const filterInputValue = useRecoilValue(searchInputState);

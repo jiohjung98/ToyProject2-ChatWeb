@@ -40,23 +40,6 @@ function UserSelect() {
       router.push(`/chatting/${chat.id}`);
     }
   };
-  // const getMyChats = async () => {
-  //     try {
-  //         const res = await instance.get<Chat[], any>(`chat`);
-  //         if (res) {
-  //             console.log(res.chats)
-  //             setMyChats(res.chats);
-  //         } else {
-  //             console.log('내 채팅 데이터 조회 실패');
-  //         }
-  //     } catch (error) {
-  //         console.error(error);
-  //     }
-  // };
-
-  // useEffect(() => {
-  //     getMyChats()
-  //  }, []);
 
   const handleChatClick = async () => {
     if (selectedUsers.length === 1) {
@@ -71,6 +54,7 @@ function UserSelect() {
                 // 로그인 사용자와 선택된 사용자의 ID를 정렬하여 채팅방 이름 생성
                 const sortedUserIds = [userId, selectedUserId].sort();
                 const chatName = `1:1 Chat ${sortedUserIds.join('_')}`;
+                console.log(chatName)
 
                 const existingChat = chats ? chats.find((chat) => chat.name === chatName) : null;
 
@@ -79,9 +63,7 @@ function UserSelect() {
                     enterChatRoom(existingChat);
                     console.log('이미 채팅방이 존재해요. 그 채팅방으로 이동하겠습니다.');
                     console.log(existingChat);
-                    console.log(userId);
-                    console.log(selectedUser.id);
-                    console.log(selectedUser.name);
+                    console.log(chatName)
                 } else {
                     // 채팅방이 없으면 채팅방 생성 후 이동
                     console.log('채팅방이 없습니다. 새로운 채팅방을 생성하겠습니다.');
@@ -90,10 +72,9 @@ function UserSelect() {
                     console.log(selectedUser.id);
                     console.log(selectedUser.name);
 
-                    console.log(myChats);
                     console.log(existingChat);
+                    console.log(chatName)
                     createChatRoom(chatName, isPrivate);
-                    console.log(userId);
                 }
             } else {
                 console.error('선택된 사용자의 ID가 없습니다.');
@@ -138,7 +119,7 @@ function UserSelect() {
           serverId: `${process.env.NEXT_PUBLIC_SERVER_KEY}`,
         },
         body: JSON.stringify({
-          name,
+          name: chatName,
           users: [userId, ...selectedUserIds],
           isPrivate,
         }),

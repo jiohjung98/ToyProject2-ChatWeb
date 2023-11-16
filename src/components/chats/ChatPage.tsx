@@ -83,7 +83,7 @@ const MyChats = ({ userType }: { userType: string }) => {
         },
       });
 
-      await (() => {
+      const socketOn = () => {
         socket.on('connect', () => {
           console.log('Socket connected');
         });
@@ -93,7 +93,9 @@ const MyChats = ({ userType }: { userType: string }) => {
         socket.on('disconnect', () => {
           console.log('disconnect');
         });
-      });
+      };
+
+      await socketOn();
 
       socket.disconnect();
       router.push(`/chatting/${selectedChat.id}`);

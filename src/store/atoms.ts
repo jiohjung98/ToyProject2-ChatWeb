@@ -24,3 +24,8 @@ export const UserProfileModal = atom<boolean>({
   key: 'UserProfileModal',
   default: false,
 });
+
+export const UserNameRecoil = atom<string | undefined>({
+  key: 'UserNameRecoil',
+  default: '',
+});

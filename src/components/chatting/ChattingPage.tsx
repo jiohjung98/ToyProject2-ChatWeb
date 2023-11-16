@@ -1,6 +1,7 @@
 'use client';
 
 import styled from 'styled-components';
+import { useRecoilState } from 'recoil';
 import React, { useEffect, useState } from 'react';
 import MessageContainer from './MessageContainer';
 import io from 'socket.io-client';
@@ -8,6 +9,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import ChattingNavigation from './ChattingNavigation';
 import ChattingModal from './ChattingModal';
 import { getCookie } from '@/lib/cookie';
+import { UserNameRecoil } from '@/store/atoms';
 
 interface Message {
   id: string;
@@ -29,57 +31,14 @@ export default function ChattingPage() {
   const [getUserToggle, setGetUserToggle] = useState<boolean>(true);
   const [loading, setLoading] = useState(true);
 
+  const [userName, setUserName] = useRecoilState<string | undefined>(UserNameRecoil);
+
   const router = useRouter();
 
   const pathname = usePathname();
   const chatId = pathname.split('/')[2];
   const accessToken = getCookie('accessToken');
   const userId = typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
-
-  useEffect(() => {
-    getUsers();
-  }, []);
-
-  useEffect(() => {
-    const FetchMessagesInterval = setInterval(() => {
-      socket.emit('fetch-messages');
-    }, 2000);
-    try {
-      socket.on('connect', () => {
-        console.log('Socket connected');
-        FetchMessagesInterval;
-      });
-
-      socket.on('disconnect', () => {
-        console.log('disconnect');
-      });
-
-      socket.on('messages-to-client', (messageObject) => {
-        setLoading(false);
-        setMessages(messageObject.messages.reverse());
-        clearInterval(FetchMessagesInterval);
-      });
-
-      socket.on('message-to-client', (messageObject) => {
-        setMessages((prevMessages) => [messageObject, ...prevMessages]);
-      });
-
-      socket.on('join', (data) => {
-        console.log(data, 'join');
-        setUsers(data.users);
-      });
-
-      socket.on('leave', (data) => {
-        console.log(data, 'leave');
-        setUsers(data.users);
-      });
-      return () => {
-        socket.disconnect();
-      };
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
 
   const socket = io(`wss://fastcampus-chat.net/chat?chatId=${chatId}`, {
     extraHeaders: {
@@ -107,7 +66,7 @@ export default function ChattingPage() {
         userBlock = false;
       }
     }
-    if (userBlock) router.back();
+    if (userBlock) router.push('/');
 
     // 채팅방 이름, 유저 목록 가져오기
     if (data.chat.users.length == 1 && data.chat.isPrivate) {
@@ -141,6 +100,55 @@ export default function ChattingPage() {
     }
     return undefined;
   };
+
+  if (userId) setUserName(findUserName(userId));
+
+  useEffect(() => {
+    getUsers();
+  }, [getUserToggle]);
+
+  useEffect(() => {
+    const FetchMessagesInterval = setInterval(() => {
+      socket.emit('fetch-messages');
+    }, 2000);
+    try {
+      socket.on('connect', () => {
+        console.log('Socket connected');
+        FetchMessagesInterval;
+      });
+
+      socket.on('disconnect', () => {
+        console.log('disconnect');
+      });
+
+      socket.on('messages-to-client', (messageObject) => {
+        setLoading(false);
+        setMessages(messageObject.messages.reverse());
+        clearInterval(FetchMessagesInterval);
+      });
+
+      socket.on('message-to-client', (messageObject) => {
+        setMessages((prevMessages) => [messageObject, ...prevMessages]);
+      });
+
+      socket.on('join', (data) => {
+        console.log(data, 'join');
+        setUsers(data.users);
+        setGetUserToggle(!getUserToggle);
+      });
+
+      socket.on('leave', (data) => {
+        console.log(data, 'leave');
+        setUsers(data.users);
+        setGetUserToggle(!getUserToggle);
+      });
+      return () => {
+        socket.disconnect();
+      };
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
   // 날짜 변환
 
@@ -206,7 +214,9 @@ export default function ChattingPage() {
                         ''
                       )}
                     </>
-                  ) : messages[i].userId == messages[i + 1]?.userId || messages[i].userId == messages[i + 1]?.userId ? (
+                  ) : messages[i].userId == messages[i + 1]?.userId ||
+                    messages[i].userId == messages[i + 1]?.userId ||
+                    messages[i + 1]?.text.split(':')[0] != 'notice09' ? (
                     <>
                       <YourMessageWrapper key={message.id}>
                         <YourMessageTextWrapper>

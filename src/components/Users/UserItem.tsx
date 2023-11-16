@@ -6,6 +6,8 @@ import { BiSolidCircle } from 'react-icons/bi';
 import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { ConnectUserIdList } from './UserListStore';
+import { Chat } from '@/components/chats/chatsStore';
+import { instance } from '@/lib/api';
 
 interface User {
   id: string;

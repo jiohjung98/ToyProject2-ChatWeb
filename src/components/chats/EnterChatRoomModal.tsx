@@ -5,6 +5,7 @@ import { EnterChatRoomModalProps } from './chatsStore';
 import { textModalData } from './ModalTextData';
 
 const EnterChatRoomModal = ({ isOpen, onEnterClick, onCancelClick, selectedChat }: EnterChatRoomModalProps) => {
+  // onEnterClick() props로 넘겨주기
   const handleEnterClick = () => {
     onEnterClick();
   };

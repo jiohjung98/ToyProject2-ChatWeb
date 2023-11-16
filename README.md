@@ -183,7 +183,14 @@
  <img width="auto" height="500" alt="내 채팅" src="https://github.com/TOY-2-9/chat/assets/78890707/62b679cb-8f0d-46d3-951c-3efb0fed739d"> 
  <img width="auto" height="500" alt="오픈 채팅" src="https://github.com/TOY-2-9/chat/assets/78890707/840708f1-182b-48f0-ba14-e2864bd7dcda">
 
-## 📌 DB 스키마
+### 채팅방
+* 참여자들과 실시간으로 채팅을 주고 받을 수 있습니다.
+* 해당 채팅방에 속하지 않는 사용자는 메인 페이지로 돌아갑니다.
+* 동일한 유저의 연속적 채팅 시 유저의 프로필을 한 번만 보여줍니다.
+* 실시간으로 들어오고 나가는 참여자들을 공지해줍니다.
+
+<img width="1280" alt="스크린샷 2023-11-16 23 29 03" src="https://github.com/TOY-2-9/chat/assets/57976371/db6518a2-7c32-4030-927c-2a1130d817ea">
+
 
 ## 📌 유저 플로우
 <img width="auto" alt="유저플로우" src="https://github.com/TOY-2-9/chat/assets/101846817/0fa593f5-f90d-4d1c-82f1-5008364606f5">

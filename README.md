@@ -6,7 +6,7 @@
 <br />
 
 <details>
-<summary>야놀자 테크 캠프 토이 프로젝트 2 설명</summary>
+<summary>야놀자 테크스쿨 토이 프로젝트 요구사항</summary>
 
 # **🍋 소켓 기반 채팅앱**
 

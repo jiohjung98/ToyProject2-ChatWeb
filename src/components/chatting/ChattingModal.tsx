@@ -2,7 +2,7 @@
 
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
-import { ChattingModalToggle } from '@/store/atoms';
+import { ChattingModalToggle, UserNameRecoil } from '@/store/atoms';
 import { useRouter } from 'next/navigation';
 import InviteImg from '../../../public/assets/InviteImg.svg';
 import { getCookie } from '@/lib/cookie';
@@ -23,6 +23,7 @@ interface ChattingModalProps {
 //type
 export default function ChattingModal(props: ChattingModalProps) {
   const [modalToggle, setModalToggle] = useRecoilState<boolean>(ChattingModalToggle);
+  const [userName, setUserName] = useRecoilState<string | undefined>(UserNameRecoil);
   const router = useRouter();
 
   const accessToken = getCookie('accessToken');
@@ -50,8 +51,7 @@ export default function ChattingModal(props: ChattingModalProps) {
       }),
     });
     if (userId) {
-      const userName = await findUserName(userId);
-      props.socket.emit('message-to-server', `notice09:${userName}님이 채팅방을 나갔습니다.`);
+      await props.socket.emit('message-to-server', `notice09:${userName}님이 채팅방을 나갔습니다.`);
     }
     router.back();
   };

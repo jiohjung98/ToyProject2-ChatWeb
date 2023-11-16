@@ -1,6 +1,7 @@
 'use client';
 
 import styled from 'styled-components';
+import { useRecoilState } from 'recoil';
 import React, { useEffect, useState } from 'react';
 import MessageContainer from './MessageContainer';
 import io from 'socket.io-client';
@@ -8,6 +9,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import ChattingNavigation from './ChattingNavigation';
 import ChattingModal from './ChattingModal';
 import { getCookie } from '@/lib/cookie';
+import { UserNameRecoil } from '@/store/atoms';
 
 interface Message {
   id: string;
@@ -29,12 +31,77 @@ export default function ChattingPage() {
   const [getUserToggle, setGetUserToggle] = useState<boolean>(true);
   const [loading, setLoading] = useState(true);
 
+  const [userName, setUserName] = useRecoilState<string | undefined>(UserNameRecoil);
+
   const router = useRouter();
 
   const pathname = usePathname();
   const chatId = pathname.split('/')[2];
   const accessToken = getCookie('accessToken');
   const userId = typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
+
+  const socket = io(`wss://fastcampus-chat.net/chat?chatId=${chatId}`, {
+    extraHeaders: {
+      Authorization: `Bearer ${accessToken}`,
+      serverId: `${process.env.NEXT_PUBLIC_SERVER_KEY}`,
+    },
+  });
+
+  const getUsers = async () => {
+    const response = await fetch(`https://fastcampus-chat.net/chat/only?chatId=${chatId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+        serverId: `${process.env.NEXT_PUBLIC_SERVER_KEY}`,
+      },
+    });
+    const data = await response.json();
+
+    // 유저 블락
+    if (data.message) router.back();
+    let userBlock = true;
+    for (let i = 0; i < data.chat.users.length; i++) {
+      if (userId == data.chat.users[i].id) {
+        userBlock = false;
+      }
+    }
+    if (userBlock) router.push('/');
+
+    // 채팅방 이름, 유저 목록 가져오기
+    if (data.chat.users.length == 1 && data.chat.isPrivate) {
+      setChatName('상대방이 나간 채팅방입니다.');
+    } else if (data.chat.users.length == 2 && data.chat.isPrivate) {
+      for (let i = 0; i < data.chat.users.length; i++) {
+        if (userId != data.chat.users[i].id) {
+          setChatName(data.chat.users[i].username);
+        }
+      }
+    } else {
+      setChatName(data.chat.name);
+    }
+    setUsers(data.chat.users);
+  };
+
+  const findUserName = (userId: string): string | undefined => {
+    for (let i = 0; i < users.length; i++) {
+      if (userId == users[i].id) {
+        return users[i].username;
+      }
+    }
+    return undefined;
+  };
+
+  const findUserPicture = (userId: string): string | undefined => {
+    for (let i = 0; i < users.length; i++) {
+      if (userId == users[i].id) {
+        return users[i].picture;
+      }
+    }
+    return undefined;
+  };
+
+  if (userId) setUserName(findUserName(userId));
 
   useEffect(() => {
     getUsers();
@@ -80,67 +147,6 @@ export default function ChattingPage() {
       console.log(error);
     }
   }, []);
-
-  const socket = io(`wss://fastcampus-chat.net/chat?chatId=${chatId}`, {
-    extraHeaders: {
-      Authorization: `Bearer ${accessToken}`,
-      serverId: `${process.env.NEXT_PUBLIC_SERVER_KEY}`,
-    },
-  });
-
-  const getUsers = async () => {
-    const response = await fetch(`https://fastcampus-chat.net/chat/only?chatId=${chatId}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-        serverId: `${process.env.NEXT_PUBLIC_SERVER_KEY}`,
-      },
-    });
-    const data = await response.json();
-
-    // 유저 블락
-    if (data.message) router.back();
-    let userBlock = true;
-    for (let i = 0; i < data.chat.users.length; i++) {
-      if (userId == data.chat.users[i].id) {
-        userBlock = false;
-      }
-    }
-    if (userBlock) router.back();
-
-    // 채팅방 이름, 유저 목록 가져오기
-    if (data.chat.users.length == 1 && data.chat.isPrivate) {
-      setChatName('상대방이 나간 채팅방입니다.');
-    } else if (data.chat.users.length == 2 && data.chat.isPrivate) {
-      for (let i = 0; i < data.chat.users.length; i++) {
-        if (userId != data.chat.users[i].id) {
-          setChatName(data.chat.users[i].username);
-        }
-      }
-    } else {
-      setChatName(data.chat.name);
-    }
-    setUsers(data.chat.users);
-  };
-
-  const findUserName = (userId: string): string | undefined => {
-    for (let i = 0; i < users.length; i++) {
-      if (userId == users[i].id) {
-        return users[i].username;
-      }
-    }
-    return undefined;
-  };
-
-  const findUserPicture = (userId: string): string | undefined => {
-    for (let i = 0; i < users.length; i++) {
-      if (userId == users[i].id) {
-        return users[i].picture;
-      }
-    }
-    return undefined;
-  };
 
   // 날짜 변환
 

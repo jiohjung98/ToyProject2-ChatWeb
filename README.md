@@ -48,8 +48,8 @@ fascinating-valkyrie-a7121b.netlify.app
       </a>
     </td>
     <td align="center" width="150px">
-      <a href="https://github.com/turkey-kim" target="_blank">
-        <img src="https://github.com/2weeks-team/2weeks-team/assets/39702832/8cc8e0d9-7d9b-4162-aebd-e459e996a144" alt="진정민 프로필" />
+      <a href="https://github.com/xxxjinn" target="_blank">
+        <img src="https://avatars.githubusercontent.com/u/102955516?v=4" alt="신현진 프로필" />
       </a>
     </td>
      <td align="center" width="150px">
@@ -77,8 +77,8 @@ fascinating-valkyrie-a7121b.netlify.app
       </a>
     </td>
     <td align="center">
-      <a href="https://github.com/JeongMin83" target="_blank">
-        진정민<br />
+      <a href="https://github.com/xxxjinn" target="_blank">
+        신현진<br />
                 팀원 (FE)
       </a>
     </td>
@@ -100,7 +100,7 @@ fascinating-valkyrie-a7121b.netlify.app
 ## 📌 Contributor
 > @[JeongMin83](https://github.com/JeongMin83) (진정민) : 메인페이지, 로그인, 모집<br/>
 @[JeongMin83](https://github.com/JeongMin83) (진정민) : 메인페이지, 로그인, 모집<br/>
-@[JeongMin83](https://github.com/JeongMin83) (진정민) : 메인페이지, 로그인, 모집<br/>
+@[xxxjinn](https://github.com/xxxjinn) (신현진) : 유저 목록 페이지, 유저 프로필 모달, css 수정<br/>
 @[JeongMin83](https://github.com/JeongMin83) (진정민) : 메인페이지, 로그인, 모집<br/>
 @[NohWookJin](https://github.com/NohWookJin) (노욱진) : 회원가입, 로그인, 마이페이지<br/>
 

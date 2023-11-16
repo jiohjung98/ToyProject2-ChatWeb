@@ -16,13 +16,16 @@ interface User {
   name: string;
   picture: string;
 }
+
 interface UserProfileModalProps {
   clickModal: () => void;
   user: User;
 }
+
 interface ResponseBody {
   chats: [{ id: string; name: string }];
 }
+
 const UserProfileModal = ({ clickModal, user }: UserProfileModalProps) => {
   const router = useRouter();
   const { id, name, picture } = user;
@@ -30,6 +33,7 @@ const UserProfileModal = ({ clickModal, user }: UserProfileModalProps) => {
   const userId = localStorage.getItem('userId');
   const [myChats, setMyChats] = useState<Chat[]>([]);
   const connectUserIdList = useRecoilValue(ConnectUserIdList);
+
   const enterChatRoom = (chat: Chat) => {
     if (chat.id && chat.users) {
       const users = chat.users
@@ -39,6 +43,7 @@ const UserProfileModal = ({ clickModal, user }: UserProfileModalProps) => {
       router.push(`/chatting/${chat.id}`);
     }
   };
+
   const handleChatClick = async () => {
     try {
       const res = await instance.get<unknown, ResponseBody>(`chat`);
@@ -110,39 +115,53 @@ const UserProfileModal = ({ clickModal, user }: UserProfileModalProps) => {
     </UserModalBox>
   );
 };
+
 export default UserProfileModal;
+
 const UserModalBox = styled.div`
   position: fixed;
   top: 0;
   left: 0;
+
   width: 100%;
   height: 100%;
+
   background-color: rgba(0, 0, 0, 0.4);
+
   display: flex;
   justify-content: center;
   align-items: center;
+
   z-index: 10000;
 `;
 const ModalContent = styled.div`
   background-color: white;
+
   width: 600px;
   height: 500px;
+
   border-radius: 5%;
+
   margin: 0 2rem;
+
   display: flex;
   flex-direction: column;
 `;
 const CloseButton = styled.div`
   margin: 1.5rem 2.5rem 0 auto;
+
   cursor: pointer;
+
   .closeIcon {
     color: ${({ theme }) => theme.color.darkGray};
   }
+
   &:hover .closeIcon {
     color: ${({ theme }) => theme.color.mainGreen};
     transition: 0.4s;
   }
 `;
+
 const ModalMain = styled.div`
   display: flex;
   flex-direction: column;
@@ -150,45 +169,59 @@ const ModalMain = styled.div`
   align-items: center;
   gap: 1.5rem;
 `;
+
 const UserImg = styled.img`
   width: 150px;
   height: 150px;
+
   border-radius: 70%;
+
   overflow: hidden;
+
   margin-top: 5px;
 `;
+
 const UserInfo = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
+
 const UserName = styled.h1`
   font-size: ${({ theme }) => theme.fontSize.title};
+
   margin: 0;
 `;
+
 const ToChatting = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
   cursor: pointer;
+
   &:hover .chatIcon {
     color: ${({ theme }) => theme.color.mainGreen};
     transition: 0.4s;
   }
 `;
+
 const ChatText = styled.p`
   font-weight: 500;
   font-size: ${({ theme }) => theme.fontSize.md};
 `;
+
 const UserState = styled.div`
   display: flex;
   align-items: center;
   gap: 0.7rem;
 `;
+
 const UserStateText = styled.p`
   color: ${({ theme }) => theme.color.darkGray};
   font-size: ${({ theme }) => theme.fontSize.sm};
 `;
+
 const UserStateTextBlack = styled.p`
   color: black;
 `;

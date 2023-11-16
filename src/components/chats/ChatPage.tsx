@@ -134,11 +134,6 @@ const Wrapper = styled.div`
   gap: 1rem;
 
   padding: 3rem;
-
-  @media screen and (max-width: 768px) {
-    width: 32rem;
-    margin: 2rem;
-  }
 `;
 
 const ChatHeader = styled.div`

@@ -102,7 +102,7 @@ fascinating-valkyrie-a7121b.netlify.app
 @[JeongMin83](https://github.com/JeongMin83) (진정민) : 메인페이지, 로그인, 모집<br/>
 @[JeongMin83](https://github.com/JeongMin83) (진정민) : 메인페이지, 로그인, 모집<br/>
 @[JeongMin83](https://github.com/JeongMin83) (진정민) : 메인페이지, 로그인, 모집<br/>
-@[JeongMin83](https://github.com/JeongMin83) (진정민) : 메인페이지, 로그인, 모집<br/>
+@[NohWookJin](https://github.com/NohWookJin) (진정민) : 회원가입, 로그인, 마이페이지<br/>
 
 ## 📌 기술 스택
 

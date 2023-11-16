@@ -65,7 +65,10 @@ const MyChats = ({ userType }: { userType: string }) => {
       partChats(selectedChat.id);
       setChatModalOpen(false);
         // 채팅방 입장 공지
-        const accessToken = getCookie('accessToken');
+
+
+        try {
+         const accessToken = getCookie('accessToken');
 
         const response = await fetch(`https://fastcampus-chat.net/user?userId=${userId}`, {
           method: 'GET',
@@ -84,24 +87,21 @@ const MyChats = ({ userType }: { userType: string }) => {
             serverId: `${process.env.NEXT_PUBLIC_SERVER_KEY}`,
           },
         });
-
-        try {
           socket.on('connect', () => {
             console.log('Socket connected');
           });
-
+          
           socket.emit('message-to-server', `notice09:${userName}님이 채팅방에 입장하였습니다. `);
 
           socket.on('disconnect', () => {
             console.log('disconnect');
           });
 
-          return () => {
-            socket.disconnect();
-          };
         } catch (error) {
           console.log(error);
         }
+                  socket.disconnect();
+
       router.push(`/chatting/${selectedChat.id}`);
       console.log('새로 입장 성공');
     } else {

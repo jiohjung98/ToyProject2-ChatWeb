@@ -33,6 +33,8 @@
 
 </details>
 
+<br />
+
 ## 📌 팀 소개
 
 <table>

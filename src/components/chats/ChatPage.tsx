@@ -78,7 +78,7 @@ const MyChats = ({ userType }: { userType: string }) => {
         const data = await response.json();
         const userName = data.name;
 
-        const socket = await io(`wss://fastcampus-chat.net/chat?chatId=${chat.id}`, {
+        const socket = await io(`wss://fastcampus-chat.net/chat?chatId=${selectedChat.id}`, {
           extraHeaders: {
             Authorization: `Bearer ${accessToken}`,
             serverId: `${process.env.NEXT_PUBLIC_SERVER_KEY}`,

@@ -156,16 +156,16 @@
   - 유저 여러 명 클릭 시 단체채팅 - 프라이빗한 채팅방과 오픈 채팅을 선택할 수 있고 채팅방 이름을 직접 입력해 단체 채팅을 선택합니다.
   - 프라이빗 채팅방의 경우, 내 채팅페이지에서만 채팅방이 나타납니다.
   - 오픈 채팅방의 경우, 내 채팅페이지와 모든채팅페이지에서 채팅방이 나타납니다.
-<img width="500" alt="스크린샷 2023-11-16 182554" src="https://github.com/TOY-2-9/chat/assets/104253583/f15dd8dc-5f16-43cd-9bdc-a5237d6acb9c">
-<img width="500" alt="스크린샷 2023-11-16 182554" src="https://github.com/TOY-2-9/chat/assets/104253583/7f4b26d8-f509-46b6-9261-cae1db6630f8">
-<img width="500" alt="스크린샷 2023-11-16 182554" src="https://github.com/TOY-2-9/chat/assets/104253583/c0c7f2fa-a4ab-4537-93b8-9b4d0a6a6ea5">
+<img width="1280" alt="스크린샷 2023-11-16 182554" src="https://github.com/TOY-2-9/chat/assets/104253583/f15dd8dc-5f16-43cd-9bdc-a5237d6acb9c">
+<img width="1280" alt="스크린샷 2023-11-16 182554" src="https://github.com/TOY-2-9/chat/assets/104253583/7f4b26d8-f509-46b6-9261-cae1db6630f8">
+<img width="1280" alt="스크린샷 2023-11-16 182554" src="https://github.com/TOY-2-9/chat/assets/104253583/c0c7f2fa-a4ab-4537-93b8-9b4d0a6a6ea5">
 <br><br>
-<img width="500" alt="스크린샷 2023-11-16 182554" src="https://github.com/TOY-2-9/chat/assets/104253583/0c19a2e2-c797-47be-9921-c7f2f546be8e">
-<img width="500" alt="스크린샷 2023-11-16 182554" src="https://github.com/TOY-2-9/chat/assets/104253583/5805553d-65b8-48ad-8f62-021e01f0d40f">
-<img width="500" alt="스크린샷 2023-11-16 182554" src="https://github.com/TOY-2-9/chat/assets/104253583/68b8cbda-8877-4ffa-a54b-d21a4a75ca30">
-<img width="500" alt="스크린샷 2023-11-16 182554" src="https://github.com/TOY-2-9/chat/assets/104253583/88b16d8a-b639-43d3-9d5c-fc8e344b12b2">
-<img width="500" alt="스크린샷 2023-11-16 182554" src="https://github.com/TOY-2-9/chat/assets/104253583/0d181b40-911a-495c-974e-4add2f9d8271">
-<img width="500" alt="스크린샷 2023-11-16 182554" src="https://github.com/TOY-2-9/chat/assets/104253583/9eb98b53-e6ba-497a-bb45-c14db152bab0">
+<img width="1280" alt="스크린샷 2023-11-16 182554" src="https://github.com/TOY-2-9/chat/assets/104253583/0c19a2e2-c797-47be-9921-c7f2f546be8e">
+<img width="1280" alt="스크린샷 2023-11-16 182554" src="https://github.com/TOY-2-9/chat/assets/104253583/5805553d-65b8-48ad-8f62-021e01f0d40f">
+<img width="1280" alt="스크린샷 2023-11-16 182554" src="https://github.com/TOY-2-9/chat/assets/104253583/68b8cbda-8877-4ffa-a54b-d21a4a75ca30">
+<img width="1280" alt="스크린샷 2023-11-16 182554" src="https://github.com/TOY-2-9/chat/assets/104253583/88b16d8a-b639-43d3-9d5c-fc8e344b12b2">
+<img width="1280" alt="스크린샷 2023-11-16 182554" src="https://github.com/TOY-2-9/chat/assets/104253583/0d181b40-911a-495c-974e-4add2f9d8271">
+<img width="1280" alt="스크린샷 2023-11-16 182554" src="https://github.com/TOY-2-9/chat/assets/104253583/9eb98b53-e6ba-497a-bb45-c14db152bab0">
 
 
 

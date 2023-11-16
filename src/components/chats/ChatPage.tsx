@@ -83,17 +83,23 @@ const MyChats = ({ userType }: { userType: string }) => {
         },
       });
 
-      socket.on('connect', () => {
-        console.log('Socket enter connected');
-      });
+      try {
+        socket.on('connect', () => {
+          console.log('Socket connected');
+        });
 
-      socket.emit('message-to-server', `notice09:${userName}님이 채팅방에 입장하였습니다. `);
+        socket.emit('message-to-server', `notice09:${userName}님이 채팅방에 입장하였습니다. `);
 
-      socket.on('disconnect', () => {
-        console.log('enter disconnect');
-      });
-      await socket.disconnect();
+        socket.on('disconnect', () => {
+          console.log('disconnect');
+        });
 
+        return () => {
+          socket.disconnect();
+        };
+      } catch (error) {
+        console.log(error);
+      }
       router.push(`/chatting/${selectedChat.id}`);
       console.log('새로 입장 성공');
     } else {

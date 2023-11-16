@@ -1,6 +1,6 @@
-## 📌 프로젝트 소개
+# 📌 YFE - Chat
 
-## 📌 배포 사이트
+### 일상 속 모든 대화를 편리하게 관리할 수 있는 채팅 앱입니다.
 [![Deploy Chat Badge](https://img.shields.io/badge/Deploy-Chat-%2300956e?logo=Netlify&logoColor=%239a9a9a&labelColor=black&color=%2300956e)](https://fascinating-valkyrie-a7121b.netlify.app)
 
 <br />
